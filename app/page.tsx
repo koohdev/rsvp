@@ -542,15 +542,18 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Transition Route: Mermaid diving downward pointing to Venue Reception */}
-            <div className="w-full flex items-center justify-center my-3 sm:my-4 select-none" aria-hidden="true">
-              <div className="drop-shadow-sm boil-jiggle flex items-center justify-center">
-                <img
-                  src="/compressed/mermaid-transition.webp"
-                  alt="Mermaid diving downward pointing to Venue Reception"
-                  className="w-16 sm:w-20 h-auto object-contain block rotate-[-18deg] transition-transform duration-500 hover:scale-105 boil-alive"
-                />
-              </div>
+            {/* Transition Route: Church Ceremony -> Venue Reception */}
+            <div className="flex flex-col items-center justify-center my-3 select-none" aria-hidden="true">
+              <div className="w-0.5 h-12 border-l-2 border-dashed border-stone-300" />
+              <svg 
+                className="w-4 h-4 text-stone-400 -mt-0.5" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor" 
+                strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
 
 
