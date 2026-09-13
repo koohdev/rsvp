@@ -83,6 +83,7 @@ function calculateTimeUntilEvent() {
 export default function Home() {
   const [isOpened, setIsOpened] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -91,6 +92,65 @@ export default function Home() {
   } | null>(null);
   const [showRsvpNotice, setShowRsvpNotice] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Audio references for interactive sound effects
+  const popAudioRef = useRef<HTMLAudioElement | null>(null);
+  const waterBubbleAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Pre-load audio on client mount
+    const pop = new Audio("/button-bubble-pop.mp3");
+    pop.volume = 0.8;
+    pop.preload = "auto";
+    popAudioRef.current = pop;
+
+    const water = new Audio("/krnbeatz-bubble-in-water-422579.mp3");
+    water.volume = 0.5;
+    water.preload = "auto";
+    waterBubbleAudioRef.current = water;
+
+    return () => {
+      pop.pause();
+      water.pause();
+      popAudioRef.current = null;
+      waterBubbleAudioRef.current = null;
+    };
+  }, []);
+
+  const playPopSound = () => {
+    if (isMuted || !popAudioRef.current) return;
+    try {
+      popAudioRef.current.currentTime = 0;
+      popAudioRef.current.play().catch(() => {});
+    } catch {}
+  };
+
+  const playWaterBubbleSound = () => {
+    if (isMuted || !waterBubbleAudioRef.current) return;
+    try {
+      waterBubbleAudioRef.current.currentTime = 0;
+      waterBubbleAudioRef.current.volume = 0.5;
+      waterBubbleAudioRef.current.play().catch(() => {});
+    } catch {}
+  };
+
+  const stopWaterBubbleSound = () => {
+    if (!waterBubbleAudioRef.current) return;
+    try {
+      const audio = waterBubbleAudioRef.current;
+      const fadeStep = 0.1;
+      const interval = setInterval(() => {
+        if (audio.volume > fadeStep) {
+          audio.volume = Math.max(0, audio.volume - fadeStep);
+        } else {
+          clearInterval(interval);
+          audio.pause();
+          audio.currentTime = 0;
+          audio.volume = 0.5;
+        }
+      }, 40);
+    } catch {}
+  };
 
   // Countdown ticking effect
   useEffect(() => {
@@ -101,16 +161,22 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle clicking the envelope
+  // Handle clicking the envelope or the open button
   const handleCardClick = () => {
+    playPopSound();
+
     if (!isOpened) {
       setIsOpened(true);
-      // After 1 sec of invitation-card-opened.png being displayed, open bottom sheet
+      // Play bubbles emerging in water sound
+      playWaterBubbleSound();
+
+      // After 1 sec of invitation-card-opened being displayed, open bottom sheet
       timerRef.current = setTimeout(() => {
         setSheetOpen(true);
       }, 1000);
     } else {
       setSheetOpen(true);
+      playWaterBubbleSound();
     }
   };
 
@@ -127,6 +193,55 @@ export default function Home() {
     <div className="relative min-h-[100dvh] w-full bg-white overflow-x-hidden">
       {/* SVG Filters for hand-drawn boiling lines animation */}
       <BoilingFilter />
+
+      {/* Subtle Sound Mute/Unmute toggle */}
+      <button
+        type="button"
+        onClick={() => {
+          setIsMuted((prev) => {
+            const next = !prev;
+            if (next && waterBubbleAudioRef.current) {
+              waterBubbleAudioRef.current.pause();
+            }
+            return next;
+          });
+        }}
+        aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+        title={isMuted ? "Unmute sound" : "Mute sound"}
+        className="fixed top-4 right-4 z-30 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-white/80 hover:bg-white text-stone-600 hover:text-stone-900 border border-stone-200/80 shadow-xs hover:shadow-md backdrop-blur-xs transition-all active:scale-95 cursor-pointer select-none"
+      >
+        {isMuted ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 text-stone-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4 text-[#183B49]"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+        )}
+      </button>
       
       {/* Main Container - No centered flex */}
       <main className="relative z-10 w-full max-w-md mx-auto min-h-[100dvh]">
@@ -174,22 +289,52 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Status indicator / View details anchored directly below the 52vh baseline */}
+        {/* Interactive Click to open Button / View details anchored directly below the 52vh baseline */}
         <div className="absolute top-[52vh] left-0 right-0 pt-4 text-center">
           {!isOpened ? (
-            <span className="text-stone-500 text-xs tracking-widest uppercase font-medium hover:text-stone-900 transition-colors">
-              Click to open
-            </span>
+            <button
+              type="button"
+              onClick={handleCardClick}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-stone-900/5 hover:bg-stone-900/10 active:scale-95 text-stone-700 hover:text-stone-900 text-xs tracking-widest uppercase font-semibold transition-all shadow-xs cursor-pointer select-none group"
+            >
+              <span>Click to open</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-700 transition-colors animate-bounce"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
           ) : (
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                setSheetOpen(true);
+                handleCardClick();
               }}
-              className="text-xs text-stone-500 hover:text-stone-900 underline underline-offset-4 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              View Details
+              <span>View Details</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-3.5 h-3.5 text-stone-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
             </button>
           )}
         </div>
@@ -205,7 +350,12 @@ export default function Home() {
       {/* 1rem padding each side (left-4 right-4), connected flush to the bottom (bottom-0), solid white, no gradients, no emojis */}
       <BottomSheet
         open={sheetOpen}
-        onOpenChange={setSheetOpen}
+        onOpenChange={(isOpen) => {
+          setSheetOpen(isOpen);
+          if (!isOpen) {
+            stopWaterBubbleSound();
+          }
+        }}
         showCloseButton={true}
         backgroundImage="/compressed/underwater-bg.webp"
         className="border-stone-200 text-stone-900"
@@ -608,6 +758,7 @@ export default function Home() {
                     target={RSVP_GOOGLE_FORM_URL ? "_blank" : undefined}
                     rel={RSVP_GOOGLE_FORM_URL ? "noopener noreferrer" : undefined}
                     onClick={(e) => {
+                      playPopSound();
                       if (!RSVP_GOOGLE_FORM_URL) {
                         e.preventDefault();
                         setShowRsvpNotice(true);
