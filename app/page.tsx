@@ -106,6 +106,7 @@ export default function Home() {
 
     const water = new Audio("/krnbeatz-bubble-in-water-422579.mp3");
     water.volume = 0.5;
+    water.loop = true;
     water.preload = "auto";
     waterBubbleAudioRef.current = water;
 
