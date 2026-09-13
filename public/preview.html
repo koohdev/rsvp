@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview Card Generator (1200x630) — Gianna's 1st Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #183B49;
+      --primary-dark: #0f2630;
+      --accent: #D97A72;
+      --accent-hover: #c46860;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --paper: #FBF9F5;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-badge {
+      background: rgba(217, 122, 114, 0.2);
+      color: var(--accent);
+      border: 1px solid rgba(217, 122, 114, 0.4);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .header-title h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--surface-border);
+    }
+    .btn-secondary:hover {
+      background: #2a374d;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 2px 10px rgba(217, 122, 114, 0.35);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px rgba(217, 122, 114, 0.45);
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      flex: 1;
+      min-height: calc(100vh - 61px);
+    }
+
+    /* Viewport Area */
+    .viewport {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 24px;
+      overflow-y: auto;
+      background: radial-gradient(circle at center 20%, #1e293b 0%, #0f172a 100%);
+    }
+
+    .viewport-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--surface-border);
+    }
+
+    .zoom-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .zoom-btn:hover, .zoom-btn.active {
+      color: #fff;
+      background: var(--surface);
+    }
+
+    .card-stage {
+      position: relative;
+      transform-origin: top center;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    /* EXACT 1200x630 Canvas Container */
+    #card-canvas {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      overflow: hidden;
+      background: #FBF9F5;
+      user-select: none;
+      border-radius: 4px;
+    }
+
+    #card-bg {
+      position: absolute;
+      inset: 0;
+      width: 1200px;
+      height: 630px;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Gianna Portrait Container */
+    #portrait-wrapper {
+      position: absolute;
+      left: 399px;
+      top: 98px;
+      width: 404px;
+      height: 412px;
+      overflow: hidden;
+      border-radius: 202px 202px 18px 18px;
+      z-index: 2;
+      box-shadow: inset 0 0 12px rgba(24, 59, 73, 0.15);
+      background: #FAF8F2;
+      transition: border-radius 0.1s ease;
+    }
+
+    #portrait-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      transform-origin: center center;
+    }
+
+    /* Soft border blending overlay inside the frame */
+    #frame-feather {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 0 4px rgba(24, 59, 73, 0.22);
+      z-index: 3;
+    }
+
+    /* Sidebar Controls */
+    .sidebar {
+      background: var(--surface);
+      border-left: 1px solid var(--surface-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+      max-height: calc(100vh - 61px);
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-group {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .slider-header span:last-child {
+      font-family: monospace;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #334155;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(217, 122, 114, 0.6);
+      transition: transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .pill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    /* Social Card Preview Section */
+    .social-preview-section {
+      width: 100%;
+      max-width: 680px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .social-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .social-header h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Realistic WhatsApp / iMessage / FB card preview */
+    .mockup-card {
+      background: #202c33;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a3942;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-media {
+      width: 100%;
+      aspect-ratio: 1.905 / 1;
+      background: #111b21;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mockup-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mockup-content {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mockup-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e9edef;
+      line-height: 1.3;
+    }
+
+    .mockup-desc {
+      font-size: 12px;
+      color: #8696a0;
+      line-height: 1.4;
+    }
+
+    .mockup-url {
+      font-size: 11px;
+      color: #00a884;
+      text-transform: lowercase;
+      margin-top: 2px;
+    }
+
+    /* Notice banner */
+    .info-banner {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(24, 59, 73, 0.35);
+      border: 1px solid rgba(24, 59, 73, 0.6);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.4;
+    }
+
+    .info-banner strong {
+      color: #fff;
+    }
+
+    /* Hidden Canvas used for Export */
+    #export-canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-title">
+      <h1>Preview Image Generator</h1>
+      <span class="header-badge">1200 &times; 630</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" id="btn-reset">Reset Alignment</button>
+      <button class="btn btn-primary" id="btn-download-jpg">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download preview.jpg
+      </button>
+      <button class="btn btn-secondary" id="btn-download-png">PNG</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    
+    <!-- Viewport Area -->
+    <main class="viewport">
+      
+      <!-- Viewport Scale Controls -->
+      <div class="viewport-toolbar">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Zoom:</span>
+        <button class="zoom-btn active" data-zoom="fit">Fit Screen</button>
+        <button class="zoom-btn" data-zoom="0.5">50%</button>
+        <button class="zoom-btn" data-zoom="0.75">75%</button>
+        <button class="zoom-btn" data-zoom="1.0">100% (Actual)</button>
+      </div>
+
+      <!-- 1200x630 Card Container -->
+      <div class="card-stage" id="card-stage">
+        <div id="card-canvas">
+          <!-- Card Base Landscape (1200x630) -->
+          <img
+            id="card-bg"
+            src="assets/invitation-card-no-portrait-1200x630.jpg"
+            alt="Invitation Card Background"
+            onerror="this.onerror=null; this.src='invitation-card-no-portrait-1200x630.jpg';"
+          />
+
+          <!-- Gianna Ghibli Portrait in Arch Frame -->
+          <div id="portrait-wrapper">
+            <img
+              id="portrait-img"
+              src="assets/gianna-ghibli.jpg"
+              alt="Gianna Isabelle Portrait"
+              onerror="this.onerror=null; this.src='gianna-ghibli.jpg';"
+            />
+            <div id="frame-feather"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media Card Simulator -->
+      <div class="social-preview-section">
+        <div class="social-header">
+          <h3>Live Social Link Preview (WhatsApp &bull; iMessage &bull; Facebook)</h3>
+          <span style="font-size: 11px; color: var(--text-muted);">OG Card 1.91:1</span>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-media">
+            <canvas id="mini-preview-canvas" style="width: 100%; height: 100%; object-fit: cover; display: block;"></canvas>
+          </div>
+          <div class="mockup-content">
+            <div class="mockup-title">You're invited to Gianna's Baptism and First Birthday</div>
+            <div class="mockup-desc">Tap here to RSVP</div>
+            <div class="mockup-url">gianna-turns-one.vercel.app</div>
+          </div>
+        </div>
+
+        <div class="info-banner">
+          <strong>Note:</strong> As requested, the title <em>"You're invited to Gianna's Baptism and First Birthday"</em> and description <em>"Tap here to RSVP"</em> are rendered by the platform's meta tags below the card, keeping the invitation artwork clean and uncluttered.
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Sidebar Controls -->
+    <aside class="sidebar">
+
+      <!-- Portrait Positioning -->
+      <div>
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          Frame Alignment
+        </div>
+
+        <div class="control-group">
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Position X</span>
+              <span id="val-posX">399px</span>
+            </div>
+            <input type="range" id="slider-posX" min="350" max="450" value="399" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Position Y</span>
+              <span id="val-posY">98px</span>
+            </div>
+            <input type="range" id="slider-posY" min="50" max="150" value="98" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Width</span>
+              <span id="val-width">404px</span>
+            </div>
+            <input type="range" id="slider-width" min="360" max="460" value="404" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Height</span>
+              <span id="val-height">412px</span>
+            </div>
+            <input type="range" id="slider-height" min="360" max="460" value="412" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Arch Curvature -->
+      <div>
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2a10 10 0 0 0-10 10v8h20v-8a10 10 0 0 0-10-10z"></path>
+          </svg>
+          Arch Shape
+        </div>
+
+        <div class="control-group">
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Top Radius (Arch)</span>
+              <span id="val-radiusTop">202px</span>
+            </div>
+            <input type="range" id="slider-radiusTop" min="100" max="250" value="202" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Bottom Radius</span>
+              <span id="val-radiusBottom">18px</span>
+            </div>
+            <input type="range" id="slider-radiusBottom" min="0" max="50" value="18" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Zoom & Pan -->
+      <div>
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+          Portrait Zoom & Pan
+        </div>
+
+        <div class="control-group">
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Zoom</span>
+              <span id="val-zoom">100%</span>
+            </div>
+            <input type="range" id="slider-zoom" min="80" max="160" value="100" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Pan X</span>
+              <span id="val-panX">0px</span>
+            </div>
+            <input type="range" id="slider-panX" min="-60" max="60" value="0" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Pan Y</span>
+              <span id="val-panY">0px</span>
+            </div>
+            <input type="range" id="slider-panY" min="-60" max="60" value="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Paper Harmony & Tone -->
+      <div>
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a10 10 0 0 1 0 20z"></path>
+          </svg>
+          Paper Color Harmony
+        </div>
+
+        <div class="control-group">
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Warmth (Sepia)</span>
+              <span id="val-warmth">6%</span>
+            </div>
+            <input type="range" id="slider-warmth" min="0" max="30" value="6" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Brightness</span>
+              <span id="val-brightness">102%</span>
+            </div>
+            <input type="range" id="slider-brightness" min="85" max="115" value="102" />
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Contrast</span>
+              <span id="val-contrast">102%</span>
+            </div>
+            <input type="range" id="slider-contrast" min="85" max="115" value="102" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Change Portrait File -->
+      <div>
+        <div class="section-title">Custom Portrait Upload</div>
+        <div class="control-group">
+          <label class="btn btn-secondary" style="width: 100%; justify-content: center; font-size: 12px; cursor: pointer;">
+            <input type="file" id="file-upload" accept="image/*" style="display: none;" />
+            <span>Upload Alternative Photo</span>
+          </label>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Offscreen 1200x630 Export Canvas -->
+  <canvas id="export-canvas" width="1200" height="630"></canvas>
+
+  <script>
+    // Elements
+    const cardStage = document.getElementById('card-stage');
+    const cardBg = document.getElementById('card-bg');
+    const portraitWrapper = document.getElementById('portrait-wrapper');
+    const portraitImg = document.getElementById('portrait-img');
+    const exportCanvas = document.getElementById('export-canvas');
+    const miniPreviewCanvas = document.getElementById('mini-preview-canvas');
+
+    // Default configuration (pixel-matched to invitation card frame)
+    const DEFAULTS = {
+      posX: 399,
+      posY: 98,
+      width: 404,
+      height: 412,
+      radiusTop: 202,
+      radiusBottom: 18,
+      zoom: 100,
+      panX: 0,
+      panY: 0,
+      warmth: 6,
+      brightness: 102,
+      contrast: 102,
+    };
+
+    let state = { ...DEFAULTS };
+
+    // Slider mappings
+    const sliders = [
+      { id: 'posX', unit: 'px', prop: 'posX' },
+      { id: 'posY', unit: 'px', prop: 'posY' },
+      { id: 'width', unit: 'px', prop: 'width' },
+      { id: 'height', unit: 'px', prop: 'height' },
+      { id: 'radiusTop', unit: 'px', prop: 'radiusTop' },
+      { id: 'radiusBottom', unit: 'px', prop: 'radiusBottom' },
+      { id: 'zoom', unit: '%', prop: 'zoom' },
+      { id: 'panX', unit: 'px', prop: 'panX' },
+      { id: 'panY', unit: 'px', prop: 'panY' },
+      { id: 'warmth', unit: '%', prop: 'warmth' },
+      { id: 'brightness', unit: '%', prop: 'brightness' },
+      { id: 'contrast', unit: '%', prop: 'contrast' },
+    ];
+
+    function updateDOM() {
+      // Wrapper Position & Size
+      portraitWrapper.style.left = `${state.posX}px`;
+      portraitWrapper.style.top = `${state.posY}px`;
+      portraitWrapper.style.width = `${state.width}px`;
+      portraitWrapper.style.height = `${state.height}px`;
+
+      // Arch Curvature
+      portraitWrapper.style.borderRadius = `${state.radiusTop}px ${state.radiusTop}px ${state.radiusBottom}px ${state.radiusBottom}px`;
+
+      // Inner Image Transform (Zoom & Pan)
+      const scale = state.zoom / 100;
+      portraitImg.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${scale})`;
+
+      // Color filters
+      portraitImg.style.filter = `sepia(${state.warmth}%) brightness(${state.brightness}%) contrast(${state.contrast}%)`;
+
+      // Update Slider Labels
+      sliders.forEach(({ id, unit, prop }) => {
+        const valEl = document.getElementById(`val-${id}`);
+        const inputEl = document.getElementById(`slider-${id}`);
+        if (valEl) valEl.textContent = `${state[prop]}${unit}`;
+        if (inputEl) inputEl.value = state[prop];
+      });
+
+      // Update Mini Preview
+      renderMiniPreview();
+    }
+
+    // Attach listeners
+    sliders.forEach(({ id, prop }) => {
+      const inputEl = document.getElementById(`slider-${id}`);
+      if (inputEl) {
+        inputEl.addEventListener('input', (e) => {
+          state[prop] = parseFloat(e.target.value);
+          updateDOM();
+        });
+      }
+    });
+
+    // Reset button
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      state = { ...DEFAULTS };
+      updateDOM();
+    });
+
+    // File Upload support
+    document.getElementById('file-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          portraitImg.src = evt.target.result;
+          portraitImg.onload = () => updateDOM();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Zoom / Fit Viewport logic
+    let currentZoomMode = 'fit';
+
+    function resizeStage() {
+      if (currentZoomMode === 'fit') {
+        const viewport = document.querySelector('.viewport');
+        const availableWidth = viewport.clientWidth - 80;
+        const scale = Math.min(1, Math.max(0.3, availableWidth / 1200));
+        cardStage.style.transform = `scale(${scale})`;
+        cardStage.style.marginBottom = `${-(630 * (1 - scale))}px`;
+      } else {
+        const scale = parseFloat(currentZoomMode);
+        cardStage.style.transform = `scale(${scale})`;
+        cardStage.style.marginBottom = `${-(630 * (1 - scale))}px`;
+      }
+    }
+
+    window.addEventListener('resize', resizeStage);
+
+    document.querySelectorAll('.zoom-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.zoom-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentZoomMode = btn.getAttribute('data-zoom');
+        resizeStage();
+      });
+    });
+
+    // Draw card composition onto HTML5 Canvas
+    function drawComposition(canvas, callback) {
+      const ctx = canvas.getContext('2d');
+      const w = 1200;
+      const h = 630;
+      canvas.width = w;
+      canvas.height = h;
+
+      // Draw background
+      ctx.drawImage(cardBg, 0, 0, w, h);
+
+      // Clip arch path for portrait
+      ctx.save();
+      ctx.beginPath();
+      const rTop = state.radiusTop;
+      const rBot = state.radiusBottom;
+      const px = state.posX;
+      const py = state.posY;
+      const pw = state.width;
+      const ph = state.height;
+
+      // Draw custom arch rounded rectangle path
+      if (ctx.roundRect) {
+        ctx.roundRect(px, py, pw, ph, [rTop, rTop, rBot, rBot]);
+      } else {
+        // Fallback for older browsers
+        ctx.moveTo(px + rTop, py);
+        ctx.lineTo(px + pw - rTop, py);
+        ctx.quadraticCurveTo(px + pw, py, px + pw, py + rTop);
+        ctx.lineTo(px + pw, py + ph - rBot);
+        ctx.quadraticCurveTo(px + pw, py + ph, px + pw - rBot, py + ph);
+        ctx.lineTo(px + rBot, py + ph);
+        ctx.quadraticCurveTo(px, py + ph, px, py + ph - rBot);
+        ctx.lineTo(px, py + rTop);
+        ctx.quadraticCurveTo(px, py, px + rTop, py);
+      }
+      ctx.closePath();
+      ctx.clip();
+
+      // Apply filters on canvas
+      ctx.filter = `sepia(${state.warmth}%) brightness(${state.brightness}%) contrast(${state.contrast}%)`;
+
+      // Apply zoom & pan transforms
+      const scale = state.zoom / 100;
+      const drawW = pw * scale;
+      const drawH = ph * scale;
+      const drawX = px + (pw - drawW) / 2 + state.panX;
+      const drawY = py + (ph - drawH) / 2 + state.panY;
+
+      ctx.drawImage(portraitImg, drawX, drawY, drawW, drawH);
+      ctx.restore();
+
+      // Inner shadow / soft edge border
+      ctx.save();
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(px, py, pw, ph, [rTop, rTop, rBot, rBot]);
+      } else {
+        ctx.rect(px, py, pw, ph);
+      }
+      ctx.strokeStyle = "rgba(24, 59, 73, 0.18)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+
+      if (callback) callback();
+    }
+
+    // Live update mini preview in social mockup
+    function renderMiniPreview() {
+      drawComposition(miniPreviewCanvas);
+    }
+
+    // Export & Download
+    function triggerDownload(format = 'jpeg', filename = 'preview.jpg') {
+      drawComposition(exportCanvas, () => {
+        const mime = format === 'png' ? 'image/png' : 'image/jpeg';
+        const quality = format === 'png' ? undefined : 0.94;
+        const dataUrl = exportCanvas.toDataURL(mime, quality);
+
+        const a = document.createElement('a');
+        a.download = filename;
+        a.href = dataUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    }
+
+    document.getElementById('btn-download-jpg').addEventListener('click', () => {
+      triggerDownload('jpeg', 'preview.jpg');
+    });
+
+    document.getElementById('btn-download-png').addEventListener('click', () => {
+      triggerDownload('png', 'preview.png');
+    });
+
+    // Wait for images to load before initial render
+    let loaded = 0;
+    function checkLoaded() {
+      loaded++;
+      if (loaded >= 2) {
+        updateDOM();
+        resizeStage();
+      }
+    }
+
+    if (cardBg.complete) checkLoaded();
+    else cardBg.onload = checkLoaded;
+
+    if (portraitImg.complete) checkLoaded();
+    else portraitImg.onload = checkLoaded;
+
+  </script>
+</body>
+</html>

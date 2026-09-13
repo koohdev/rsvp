@@ -27,13 +27,11 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://gianna-turns-one.vercel.app"),
-  title: "Gianna Isabelle — 1st Birthday & Baptism Invitation",
-  description:
-    "Join us for the baptism and 1st birthday celebration of our daughter, Gianna Isabelle. October 10, 2026.",
+  title: "You're invited to Gianna's Baptism and First Birthday",
+  description: "Tap here to RSVP",
   openGraph: {
-    title: "Gianna Isabelle — 1st Birthday & Baptism",
-    description:
-      "Join us in celebrating Gianna's 1st Birthday & Baptism on October 10, 2026.",
+    title: "You're invited to Gianna's Baptism and First Birthday",
+    description: "Tap here to RSVP",
     images: [
       {
         url: "/preview.jpg",
@@ -46,9 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gianna Isabelle — 1st Birthday & Baptism",
-    description:
-      "Join us in celebrating Gianna's 1st Birthday & Baptism on October 10, 2026.",
+    title: "You're invited to Gianna's Baptism and First Birthday",
+    description: "Tap here to RSVP",
     images: ["/preview.jpg"],
   },
 };
