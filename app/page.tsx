@@ -110,6 +110,11 @@ export default function Home() {
     water.volume = 0.15;
     water.loop = true;
     water.preload = "auto";
+    const onWaterEnded = () => {
+      water.currentTime = 0;
+      water.play().catch(() => {});
+    };
+    water.addEventListener("ended", onWaterEnded);
     waterBubbleAudioRef.current = water;
 
     // Happy Birthday (Mandolin Version) celebration music
@@ -117,9 +122,16 @@ export default function Home() {
     music.volume = 0.65;
     music.loop = true;
     music.preload = "auto";
+    const onMusicEnded = () => {
+      music.currentTime = 0;
+      music.play().catch(() => {});
+    };
+    music.addEventListener("ended", onMusicEnded);
     musicAudioRef.current = music;
 
     return () => {
+      water.removeEventListener("ended", onWaterEnded);
+      music.removeEventListener("ended", onMusicEnded);
       pop.pause();
       water.pause();
       music.pause();
@@ -752,18 +764,8 @@ export default function Home() {
             {/* Section: RSVP & See You! (5rem / mt-20 spacing) */}
             <div className="mt-20 flex flex-col items-center text-center pb-10 relative">
               
-              {/* Header with "See you!" & Waving Mermaid Sticker */}
+              {/* Header with "See you!" */}
               <div className="relative mb-5 flex flex-col items-center w-full">
-                
-                {/* Joyful Waving Mermaid Sticker (Top Right) */}
-                <div className="absolute -top-12 -right-3 sm:-right-6 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
-                  <img
-                    src="/compressed/sticker-rsvp-mermaid.webp"
-                    alt="Joyful waving mermaid"
-                    className="w-full h-auto object-contain rotate-[6deg] hover:rotate-[12deg] transition-transform duration-300 boil-alive"
-                  />
-                </div>
-
                 <span className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-[#D97A72] mb-1">
                   We Can't Wait To Celebrate
                 </span>
@@ -835,6 +837,15 @@ export default function Home() {
                     src="/compressed/sticker-scuba-diver.webp"
                     alt="Cute scuba diver with goggles and tank"
                     className="w-full h-auto object-contain rotate-[-8deg] hover:rotate-[-3deg] transition-transform duration-300 boil-alive"
+                  />
+                </div>
+
+                {/* Joyful Waving Mermaid Sticker (Bottom Right of RSVP Card - flipped to face human scuba diver) */}
+                <div className="absolute -bottom-6 -right-4 sm:-right-6 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
+                  <img
+                    src="/compressed/sticker-rsvp-mermaid.webp"
+                    alt="Joyful waving mermaid"
+                    className="w-full h-auto object-contain -scale-x-100 rotate-[-6deg] hover:rotate-[-12deg] transition-transform duration-300 boil-alive"
                   />
                 </div>
 
