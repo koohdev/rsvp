@@ -347,7 +347,7 @@ export default function Home() {
       )}
 
       {/* CUSTOM BOTTOM SHEET */}
-      {/* 1rem padding each side (left-4 right-4), connected flush to the bottom (bottom-0), solid white, no gradients, no emojis */}
+      {/* 0.5rem padding each side (left-2 right-2), connected flush to the bottom (bottom-0), solid white, no gradients, no emojis */}
       <BottomSheet
         open={sheetOpen}
         onOpenChange={(isOpen) => {

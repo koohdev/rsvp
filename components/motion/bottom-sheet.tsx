@@ -123,8 +123,8 @@ export function BottomSheet({
                 ...gate.style,
               }}
               className={cn(
-                // 1rem side padding (left-4 right-4), connected flush to the bottom (bottom-0), overflow-hidden clips to rounded-t-3xl
-                "pointer-events-auto fixed bottom-0 left-4 right-4 z-50 mx-auto flex max-w-lg flex-col rounded-t-3xl overflow-hidden",
+                // 0.5rem side padding/margin (left-2 right-2), connected flush to the bottom (bottom-0), overflow-hidden clips to rounded-t-3xl
+                "pointer-events-auto fixed bottom-0 left-2 right-2 z-50 mx-auto flex max-w-lg flex-col rounded-t-3xl overflow-hidden",
                 "border-t border-x border-stone-200 bg-white text-stone-900 shadow-2xl",
                 className
               )}
