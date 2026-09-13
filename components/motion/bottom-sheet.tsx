@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 import { EASE_DRAWER } from "@/lib/ease";
 import { PresenceGate } from "@/lib/presence-gate";
 import { cn } from "@/lib/utils";
+import { AmbientBubbles } from "@/components/bubbles";
 
 const DRAWER = { duration: 0.5, ease: EASE_DRAWER } as const;
 
@@ -141,6 +142,9 @@ export function BottomSheet({
                   style={{ backgroundImage: `url(${backgroundImage})` }}
                 />
               )}
+
+              {/* Ambient Floating Underwater Bubbles inside Bottom Sheet */}
+              <AmbientBubbles className="z-1" />
 
               {/* Close Button at Top Right */}
               {showCloseButton && (

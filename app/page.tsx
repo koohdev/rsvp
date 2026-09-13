@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { BottomSheet } from "@/components/motion/bottom-sheet";
+import { EnvelopeBubbleBurst, AmbientBubbles } from "@/components/bubbles";
 
 const giftItems = [
   {
@@ -139,6 +140,9 @@ export default function Home() {
         >
           {/* Box aligned to bottom so image bottom never shifts */}
           <div className="relative w-full flex flex-col justify-end h-[345px] sm:h-[380px]">
+            {/* Bubble burst when envelope opens */}
+            <EnvelopeBubbleBurst active={isOpened} />
+
             <Image
               src={isOpened ? "/invitation-card-opened.png" : "/invitation-card-closed.png"}
               alt={isOpened ? "Opened Invitation Card Envelope" : "Closed Invitation Card Envelope"}
@@ -184,6 +188,11 @@ export default function Home() {
         </div>
 
       </main>
+
+      {/* Ambient floating bubbles across the screen while bottom sheet is open */}
+      {sheetOpen && (
+        <AmbientBubbles className="fixed inset-0 pointer-events-none z-40" />
+      )}
 
       {/* CUSTOM BOTTOM SHEET */}
       {/* 1rem padding each side (left-4 right-4), connected flush to the bottom (bottom-0), solid white, no gradients, no emojis */}
@@ -254,7 +263,7 @@ export default function Home() {
 
             {/* Date - Non-italicized numbers and comma */}
             <div className="mt-5">
-              <span className="font-cormorant text-base sm:text-lg font-bold tracking-[0.16em] uppercase text-[#183B49]">
+              <span className="font-sans text-base sm:text-lg font-bold tracking-[0.16em] uppercase text-[#183B49]">
                 October{" "}
                 <span className="font-sans not-italic font-bold tracking-normal text-[#183B49]">
                   10, 2026
@@ -264,16 +273,7 @@ export default function Home() {
           </div>
 
           {/* Section 1: Countdown & Event Locations (7rem space below Date) */}
-          <div className="pt-[7rem] flex flex-col relative">
-            
-            {/* Floating Baby Sea Turtle Sticker in the 7rem gap */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none select-none z-10">
-              <img
-                src="/sticker-baby-turtle.png"
-                alt="Baby sea turtle"
-                className="w-16 sm:w-20 h-auto object-contain drop-shadow-md rotate-[-4deg] hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+          <div className="pt-[7rem] flex flex-col">
             
             {/* Box Card 1: Church Ceremony with Countdown Header */}
             <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
@@ -351,12 +351,12 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Transition Route: Mermaid swimming downward from Church Ceremony to Venue Reception */}
+            {/* Transition Route: Mermaid diving downward pointing to Venue Reception */}
             <div className="flex flex-col items-center justify-center my-3 sm:my-4 select-none" aria-hidden="true">
               <img
                 src="/mermaid-transition.png"
-                alt="Mermaid swimming downward"
-                className="w-20 sm:w-24 h-auto object-contain block drop-shadow-sm transition-transform duration-500 hover:scale-105"
+                alt="Mermaid diving downward pointing to Venue Reception"
+                className="w-15 sm:w-19 h-auto object-contain block drop-shadow-sm rotate-[-18deg] transition-transform duration-500 hover:scale-105"
               />
             </div>
 
@@ -416,28 +416,37 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Pastel Anemone & Ponyo Goldfish Sticker */}
-              <div className="absolute -bottom-5 -right-3 w-16 sm:w-20 pointer-events-none select-none z-10">
+              {/* Pastel Anemone & Ponyo Goldfish Sticker (Left Side) */}
+              <div className="absolute -bottom-5 -left-3 w-16 sm:w-20 pointer-events-none select-none z-10">
                 <img
                   src="/sticker-anemone-goldfish.png"
                   alt="Anemone and goldfish"
-                  className="w-full h-auto object-contain drop-shadow-md rotate-[4deg] hover:rotate-[7deg] transition-transform duration-300"
+                  className="w-full h-auto object-contain drop-shadow-md rotate-[-4deg] hover:rotate-[8deg] transition-transform duration-300"
                 />
               </div>
             </div>
 
             {/* Section: Dress Code (5rem / mt-20 space) */}
             <div className="mt-20 flex flex-col items-center text-center">
-              <div className="mb-4">
+              <div className="relative mb-4">
                 <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-2">
                   Dress Code
                 </h3>
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
                   Semi-formal attire. Pastel colors are warmly appreciated.
                 </p>
+
+                {/* Pastel Clamshell with Pearl Sticker */}
+                <div className="absolute -top-3 -right-6 sm:-right-8 w-14 sm:w-16 pointer-events-none select-none z-10">
+                  <img
+                    src="/sticker-clamshell-pearl.png"
+                    alt="Pastel clamshell with pearl"
+                    className="w-full h-auto object-contain drop-shadow-md rotate-[8deg] hover:rotate-[12deg] transition-transform duration-300"
+                  />
+                </div>
               </div>
 
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full">
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full shadow-xs">
                 <img
                   src="/dress-code.jpg"
                   alt="Dress Code: Semi-formal attire in pastel colors"
@@ -448,13 +457,25 @@ export default function Home() {
 
             {/* Section: Safety Guidelines (5rem / mt-20 space) */}
             <div className="mt-20 flex flex-col items-center text-center">
-              <div className="mb-4">
-                <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
+              <div className="relative mb-4 flex items-center justify-center">
+                <h3 className="relative z-10 font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
                   Safety Guidelines
                 </h3>
+
+                {/* Gentle Baby Sea Turtle Sticker placed with -z-1 below the text */}
+                <div 
+                  className="absolute -top-3 -right-5 sm:-right-7 w-16 sm:w-20 pointer-events-none select-none -z-1"
+                  style={{ zIndex: -1 }}
+                >
+                  <img
+                    src="/sticker-baby-turtle.png"
+                    alt="Baby sea turtle"
+                    className="w-full h-auto object-contain drop-shadow-xs rotate-[-6deg] opacity-90 transition-transform duration-500"
+                  />
+                </div>
               </div>
 
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full">
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full shadow-xs">
                 <img
                   src="/safety-guidelines.jpg"
                   alt="Safety Guidelines: No smoking, Face mask if you are sick, No kissing, Hand sanitizer"
@@ -466,8 +487,18 @@ export default function Home() {
             {/* Section: Gift Ideas (5rem / mt-20 spacing) */}
             <div className="mt-20 flex flex-col pb-4">
               
-              {/* Header: Centered Gift Ideas + Natural Request Text */}
+              {/* Header: Centered Gift Ideas + Natural Request Text + Treasure Chest Sticker */}
               <div className="text-center flex flex-col items-center mb-8 px-2">
+                
+                {/* Whimsical Vintage Treasure Chest Sticker for Gianna's Savings */}
+                <div className="mb-2 w-16 sm:w-20 pointer-events-none select-none">
+                  <img
+                    src="/sticker-treasure-chest.png"
+                    alt="Treasure chest for Gianna's savings"
+                    className="w-full h-auto object-contain drop-shadow-md rotate-[-3deg] hover:rotate-[0deg] transition-transform duration-300"
+                  />
+                </div>
+
                 <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
                   Gift Ideas
                 </h3>

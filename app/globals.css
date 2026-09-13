@@ -21,3 +21,93 @@
 .font-cormorant {
   font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 }
+
+/* Underwater Floating Bubbles Animation */
+@keyframes floatBubble {
+  0% {
+    transform: translate3d(0, 105%, 0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(14px, 50%, 0) scale(1);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate3d(-12px, 25%, 0) scale(1.05);
+    opacity: 0.75;
+  }
+  95% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(8px, -15%, 0) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes burstBubble {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.3);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.95;
+    transform: translate3d(var(--drift-x, 10px), -35px, 0) scale(0.85);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translate3d(calc(var(--drift-x, 10px) * 1.6), -140px, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(calc(var(--drift-x, 10px) * 2.2), -240px, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.underwater-bubble {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.25) 45%, rgba(186, 230, 253, 0.35) 75%, rgba(253, 224, 186, 0.2) 100%);
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.6), 0 2px 8px rgba(186, 230, 253, 0.25);
+  animation: floatBubble linear infinite;
+  will-change: transform;
+}
+
+.underwater-bubble::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 22%;
+  width: 25%;
+  height: 25%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.burst-bubble {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 45%, rgba(186, 230, 253, 0.4) 75%, rgba(253, 224, 186, 0.25) 100%);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.7), 0 2px 6px rgba(186, 230, 253, 0.3);
+  animation: burstBubble cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
+}
+
+.burst-bubble::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 22%;
+  width: 25%;
+  height: 25%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
