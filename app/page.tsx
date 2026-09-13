@@ -93,9 +93,10 @@ export default function Home() {
   const [showRsvpNotice, setShowRsvpNotice] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Audio references for interactive sound effects
+  // Audio references for interactive sound effects & background celebration music
   const popAudioRef = useRef<HTMLAudioElement | null>(null);
   const waterBubbleAudioRef = useRef<HTMLAudioElement | null>(null);
+  const musicAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // Pre-load audio on client mount
@@ -104,17 +105,27 @@ export default function Home() {
     pop.preload = "auto";
     popAudioRef.current = pop;
 
+    // Underwater bubbling ambiance - lowered volume to sit gently in the background
     const water = new Audio("/krnbeatz-bubble-in-water-422579.mp3");
-    water.volume = 0.5;
+    water.volume = 0.15;
     water.loop = true;
     water.preload = "auto";
     waterBubbleAudioRef.current = water;
 
+    // Happy Birthday (Mandolin Version) celebration music
+    const music = new Audio(encodeURI("/Happy Birthday (Mandolin Version).mp3"));
+    music.volume = 0.65;
+    music.loop = true;
+    music.preload = "auto";
+    musicAudioRef.current = music;
+
     return () => {
       pop.pause();
       water.pause();
+      music.pause();
       popAudioRef.current = null;
       waterBubbleAudioRef.current = null;
+      musicAudioRef.current = null;
     };
   }, []);
 
@@ -126,28 +137,47 @@ export default function Home() {
     } catch {}
   };
 
-  const playWaterBubbleSound = () => {
-    if (isMuted || !waterBubbleAudioRef.current) return;
+  const playBackgroundAudio = () => {
+    if (isMuted) return;
     try {
-      waterBubbleAudioRef.current.currentTime = 0;
-      waterBubbleAudioRef.current.volume = 0.5;
-      waterBubbleAudioRef.current.play().catch(() => {});
+      if (waterBubbleAudioRef.current) {
+        waterBubbleAudioRef.current.volume = 0.15;
+        waterBubbleAudioRef.current.play().catch(() => {});
+      }
+      if (musicAudioRef.current) {
+        musicAudioRef.current.volume = 0.65;
+        musicAudioRef.current.play().catch(() => {});
+      }
     } catch {}
   };
 
-  const stopWaterBubbleSound = () => {
-    if (!waterBubbleAudioRef.current) return;
+  const stopBackgroundAudio = () => {
     try {
-      const audio = waterBubbleAudioRef.current;
-      const fadeStep = 0.1;
+      const water = waterBubbleAudioRef.current;
+      const music = musicAudioRef.current;
+      const fadeStep = 0.05;
       const interval = setInterval(() => {
-        if (audio.volume > fadeStep) {
-          audio.volume = Math.max(0, audio.volume - fadeStep);
-        } else {
+        let done = true;
+        if (water && water.volume > fadeStep) {
+          water.volume = Math.max(0, water.volume - fadeStep);
+          done = false;
+        }
+        if (music && music.volume > fadeStep) {
+          music.volume = Math.max(0, music.volume - fadeStep);
+          done = false;
+        }
+        if (done) {
           clearInterval(interval);
-          audio.pause();
-          audio.currentTime = 0;
-          audio.volume = 0.5;
+          if (water) {
+            water.pause();
+            water.currentTime = 0;
+            water.volume = 0.15;
+          }
+          if (music) {
+            music.pause();
+            music.currentTime = 0;
+            music.volume = 0.65;
+          }
         }
       }, 40);
     } catch {}
@@ -168,8 +198,8 @@ export default function Home() {
 
     if (!isOpened) {
       setIsOpened(true);
-      // Play bubbles emerging in water sound
-      playWaterBubbleSound();
+      // Play mandolin celebration music and ambient underwater bubbles together
+      playBackgroundAudio();
 
       // After 1 sec of invitation-card-opened being displayed, open bottom sheet
       timerRef.current = setTimeout(() => {
@@ -177,7 +207,7 @@ export default function Home() {
       }, 1000);
     } else {
       setSheetOpen(true);
-      playWaterBubbleSound();
+      playBackgroundAudio();
     }
   };
 
@@ -201,8 +231,11 @@ export default function Home() {
         onClick={() => {
           setIsMuted((prev) => {
             const next = !prev;
-            if (next && waterBubbleAudioRef.current) {
-              waterBubbleAudioRef.current.pause();
+            if (next) {
+              waterBubbleAudioRef.current?.pause();
+              musicAudioRef.current?.pause();
+            } else if (isOpened) {
+              playBackgroundAudio();
             }
             return next;
           });
@@ -354,7 +387,7 @@ export default function Home() {
         onOpenChange={(isOpen) => {
           setSheetOpen(isOpen);
           if (!isOpen) {
-            stopWaterBubbleSound();
+            stopBackgroundAudio();
           }
         }}
         showCloseButton={true}
