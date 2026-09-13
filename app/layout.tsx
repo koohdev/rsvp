@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Pinyon_Script, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
@@ -62,6 +63,21 @@ export const metadata: Metadata = {
     description: "Tap here to RSVP",
     images: [PREVIEW_IMAGE_URL],
   },
+  icons: {
+    other: [
+      {
+        rel: "image_src",
+        url: PREVIEW_IMAGE_URL,
+      },
+    ],
+  },
+  ...(process.env.NEXT_PUBLIC_FB_APP_ID
+    ? {
+        facebook: {
+          appId: process.env.NEXT_PUBLIC_FB_APP_ID,
+        },
+      }
+    : {}),
 };
 
 export default function RootLayout({
@@ -75,20 +91,6 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${pinyonScript.variable} ${cormorantGaramond.variable} h-full antialiased`}
     >
-      <head>
-        <meta property="og:title" content="You're invited to Gianna's Baptism and First Birthday" />
-        <meta property="og:description" content="Tap here to RSVP" />
-        <meta property="og:image" content={PREVIEW_IMAGE_URL} />
-        <meta property="og:image:secure_url" content={PREVIEW_IMAGE_URL} />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="You're invited to Gianna's Baptism and First Birthday" />
-        <meta name="twitter:description" content="Tap here to RSVP" />
-        <meta name="twitter:image" content={PREVIEW_IMAGE_URL} />
-        <link rel="image_src" href={PREVIEW_IMAGE_URL} />
-      </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-white text-stone-900">{children}</body>
     </html>
   );
