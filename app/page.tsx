@@ -295,16 +295,16 @@ export default function Home() {
             <button
               type="button"
               onClick={handleCardClick}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-stone-900/5 hover:bg-stone-900/10 active:scale-95 text-stone-700 hover:text-stone-900 text-xs tracking-widest uppercase font-semibold transition-all shadow-xs cursor-pointer select-none group"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
               <span>Click to open</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-700 transition-colors animate-bounce"
+                className="w-3.5 h-3.5 text-stone-400"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
