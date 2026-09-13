@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "You're invited to Gianna's Baptism and First Birthday",
   description: "Tap here to RSVP",
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     title: "You're invited to Gianna's Baptism and First Birthday",
     description: "Tap here to RSVP",
@@ -88,6 +91,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      prefix="og: https://ogp.me/ns#"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${pinyonScript.variable} ${cormorantGaramond.variable} h-full antialiased`}
     >
