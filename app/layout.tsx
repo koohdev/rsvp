@@ -25,31 +25,44 @@ const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
 });
 
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null) ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+  "https://gianna-turns-one.vercel.app"
+).replace(/\/$/, "");
+
+const PREVIEW_IMAGE_URL = `${SITE_URL}/preview.jpg`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://gianna-turns-one.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: "You're invited to Gianna's Baptism and First Birthday",
   description: "Tap here to RSVP",
   openGraph: {
     title: "You're invited to Gianna's Baptism and First Birthday",
     description: "Tap here to RSVP",
+    url: SITE_URL,
+    siteName: "Gianna's 1st Birthday & Baptism",
     images: [
       {
-        url: "/preview.jpg",
+        url: PREVIEW_IMAGE_URL,
+        secureUrl: PREVIEW_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "Gianna Isabelle — 1st Birthday & Baptism Invitation",
+        alt: "You're invited to Gianna's Baptism and First Birthday",
+        type: "image/jpeg",
       },
     ],
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "You're invited to Gianna's Baptism and First Birthday",
     description: "Tap here to RSVP",
-    images: ["/preview.jpg"],
+    images: [PREVIEW_IMAGE_URL],
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -62,6 +75,20 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${pinyonScript.variable} ${cormorantGaramond.variable} h-full antialiased`}
     >
+      <head>
+        <meta property="og:title" content="You're invited to Gianna's Baptism and First Birthday" />
+        <meta property="og:description" content="Tap here to RSVP" />
+        <meta property="og:image" content={PREVIEW_IMAGE_URL} />
+        <meta property="og:image:secure_url" content={PREVIEW_IMAGE_URL} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="You're invited to Gianna's Baptism and First Birthday" />
+        <meta name="twitter:description" content="Tap here to RSVP" />
+        <meta name="twitter:image" content={PREVIEW_IMAGE_URL} />
+        <link rel="image_src" href={PREVIEW_IMAGE_URL} />
+      </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-white text-stone-900">{children}</body>
     </html>
   );
