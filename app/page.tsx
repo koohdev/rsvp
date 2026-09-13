@@ -5,63 +5,67 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { BottomSheet } from "@/components/motion/bottom-sheet";
 import { EnvelopeBubbleBurst, AmbientBubbles } from "@/components/bubbles";
+import { BoilingFilter } from "@/components/boiling-filter";
 
 const giftItems = [
   {
     id: 1,
-    image: "/gift-ideas/1.png",
+    image: "/compressed/gift-ideas/1.webp",
     title: "Clothes 12 Months and Up",
     note: "*Neutral colors only please",
   },
   {
     id: 2,
-    image: "/gift-ideas/2.png",
+    image: "/compressed/gift-ideas/2.webp",
     title: "Mustela Products",
   },
   {
     id: 3,
-    image: "/gift-ideas/3.png",
+    image: "/compressed/gift-ideas/3.webp",
     title: "Aquaphor Baby Ointment",
   },
   {
     id: 4,
-    image: "/gift-ideas/4.png",
+    image: "/compressed/gift-ideas/4.webp",
     title: "Cycles & Cradle",
   },
   {
     id: 5,
-    image: "/gift-ideas/5.png",
+    image: "/compressed/gift-ideas/5.webp",
     title: "EQ Water Wipes",
   },
   {
     id: 10,
-    image: "/gift-ideas/10.png",
+    image: "/compressed/gift-ideas/10.webp",
     title: "Desitin Cream",
   },
   {
     id: 8,
-    image: "/gift-ideas/8.png",
+    image: "/compressed/gift-ideas/8.webp",
     title: "Mamy Poko",
     note: "Size: Medium & Large",
   },
   {
     id: 9,
-    image: "/gift-ideas/9.png",
+    image: "/compressed/gift-ideas/9.webp",
     title: "Educational & Story Books",
   },
   {
     id: 6,
-    image: "/gift-ideas/6.png",
+    image: "/compressed/gift-ideas/6.webp",
     title: "Montessori Activity Walker",
   },
   {
     id: 7,
-    image: "/gift-ideas/7.png",
+    image: "/compressed/gift-ideas/7.webp",
     title: "Montessori Wooden Toys",
   },
 ];
 
 const TARGET_EVENT_DATE = new Date("2026-10-10T10:00:00+08:00").getTime();
+
+// Google Form URL for RSVP (leave empty or replace with your actual Google Form link)
+const RSVP_GOOGLE_FORM_URL = "";
 
 function calculateTimeUntilEvent() {
   const diff = TARGET_EVENT_DATE - Date.now();
@@ -85,6 +89,7 @@ export default function Home() {
     minutes: number;
     seconds: number;
   } | null>(null);
+  const [showRsvpNotice, setShowRsvpNotice] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Countdown ticking effect
@@ -120,6 +125,8 @@ export default function Home() {
 
   return (
     <div className="relative min-h-[100dvh] w-full bg-white overflow-x-hidden">
+      {/* SVG Filters for hand-drawn boiling lines animation */}
+      <BoilingFilter />
       
       {/* Main Container - No centered flex */}
       <main className="relative z-10 w-full max-w-md mx-auto min-h-[100dvh]">
@@ -144,7 +151,7 @@ export default function Home() {
             <EnvelopeBubbleBurst active={isOpened} />
 
             <Image
-              src={isOpened ? "/invitation-card-opened.png" : "/invitation-card-closed.png"}
+              src={isOpened ? "/compressed/invitation-card-opened.webp" : "/compressed/invitation-card-closed.webp"}
               alt={isOpened ? "Opened Invitation Card Envelope" : "Closed Invitation Card Envelope"}
               width={714}
               height={isOpened ? 805 : 458}
@@ -156,7 +163,7 @@ export default function Home() {
             {!isOpened && (
               <div className="hidden" aria-hidden="true">
                 <Image
-                  src="/invitation-card-opened.png"
+                  src="/compressed/invitation-card-opened.webp"
                   alt=""
                   width={714}
                   height={805}
@@ -200,7 +207,7 @@ export default function Home() {
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         showCloseButton={true}
-        backgroundImage="/underwater-bg.jpg"
+        backgroundImage="/compressed/underwater-bg.webp"
         className="border-stone-200 text-stone-900"
       >
         <div className="flex flex-col max-w-md mx-auto py-2">
@@ -245,18 +252,18 @@ export default function Home() {
             <div className="relative w-68 sm:w-76 mx-auto mt-6">
               <div className="overflow-hidden rounded-2xl shadow-xs">
                 <img
-                  src="/gianna.jpg"
+                  src="/compressed/gianna.webp"
                   alt="Gianna Isabelle"
                   className="w-full h-auto object-cover block"
                 />
               </div>
 
               {/* Baby Mermaid on Seashell Sticker */}
-              <div className="absolute -bottom-5 -right-6 sm:-right-8 w-20 sm:w-24 pointer-events-none select-none z-10">
+              <div className="absolute -bottom-5 -right-6 sm:-right-8 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
                 <img
-                  src="/sticker-mermaid-seashell.png"
+                  src="/compressed/sticker-mermaid-seashell.webp"
                   alt="Baby mermaid on seashell"
-                  className="w-full h-auto object-contain drop-shadow-md rotate-[6deg] hover:rotate-[9deg] transition-transform duration-300"
+                  className="w-full h-auto object-contain rotate-[6deg] hover:rotate-[9deg] transition-transform duration-300 boil-alive"
                 />
               </div>
             </div>
@@ -311,7 +318,7 @@ export default function Home() {
               <div className="px-4 sm:px-5 w-full">
                 <div className="w-full h-48 sm:h-56 relative bg-stone-100 rounded-xl overflow-hidden shadow-2xs border border-stone-200/70">
                   <img
-                    src="/church.jpg"
+                    src="/compressed/church.webp"
                     alt="Immaculate Conception Parish Church (Concepcion)"
                     className="w-full h-full object-cover"
                   />
@@ -341,7 +348,7 @@ export default function Home() {
                     className="w-full  flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium transition-colors"
                   >
                     <img
-                      src="/google-maps-icon.png"
+                      src="/compressed/google-maps-icon.webp"
                       alt=""
                       className="w-4 h-4 object-contain shrink-0"
                     />
@@ -352,13 +359,16 @@ export default function Home() {
             </div>
 
             {/* Transition Route: Mermaid diving downward pointing to Venue Reception */}
-            <div className="flex flex-col items-center justify-center my-3 sm:my-4 select-none" aria-hidden="true">
-              <img
-                src="/mermaid-transition.png"
-                alt="Mermaid diving downward pointing to Venue Reception"
-                className="w-15 sm:w-19 h-auto object-contain block drop-shadow-sm rotate-[-18deg] transition-transform duration-500 hover:scale-105"
-              />
+            <div className="w-full flex items-center justify-center my-3 sm:my-4 select-none" aria-hidden="true">
+              <div className="drop-shadow-sm boil-jiggle flex items-center justify-center">
+                <img
+                  src="/compressed/mermaid-transition.webp"
+                  alt="Mermaid diving downward pointing to Venue Reception"
+                  className="w-16 sm:w-20 h-auto object-contain block rotate-[-18deg] transition-transform duration-500 hover:scale-105 boil-alive"
+                />
+              </div>
             </div>
+
 
             {/* Box Card 2: Venue / Reception */}
             <div className="relative">
@@ -366,7 +376,7 @@ export default function Home() {
                 {/* Resort Image */}
                 <div className="w-full h-48 sm:h-56 relative bg-stone-100">
                   <img
-                    src="/resort.png"
+                    src="/compressed/resort.webp"
                     alt="Benedictines Resort"
                     className="w-full h-full object-cover"
                   />
@@ -392,7 +402,7 @@ export default function Home() {
                       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium transition-colors"
                     >
                       <img
-                        src="/facebook-icon.png"
+                        src="/compressed/facebook-icon.webp"
                         alt=""
                         className="w-4 h-4 object-contain shrink-0"
                       />
@@ -406,7 +416,7 @@ export default function Home() {
                       className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium transition-colors"
                     >
                       <img
-                        src="/google-maps-icon.png"
+                        src="/compressed/google-maps-icon.webp"
                         alt=""
                         className="w-4 h-4 object-contain shrink-0"
                       />
@@ -417,11 +427,11 @@ export default function Home() {
               </div>
 
               {/* Pastel Anemone & Ponyo Goldfish Sticker (Left Side) */}
-              <div className="absolute -bottom-5 -left-3 w-16 sm:w-20 pointer-events-none select-none z-10">
+              <div className="absolute -bottom-5 -left-3 w-16 sm:w-20 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
                 <img
-                  src="/sticker-anemone-goldfish.png"
+                  src="/compressed/sticker-anemone-goldfish.webp"
                   alt="Anemone and goldfish"
-                  className="w-full h-auto object-contain drop-shadow-md rotate-[-4deg] hover:rotate-[8deg] transition-transform duration-300"
+                  className="w-full h-auto object-contain rotate-[-4deg] hover:rotate-[8deg] transition-transform duration-300 boil-alive"
                 />
               </div>
             </div>
@@ -437,18 +447,18 @@ export default function Home() {
                 </p>
 
                 {/* Pastel Clamshell with Pearl Sticker */}
-                <div className="absolute -top-3 -right-6 sm:-right-8 w-14 sm:w-16 pointer-events-none select-none z-10">
+                <div className="absolute -top-3 -right-6 sm:-right-8 w-14 sm:w-16 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
                   <img
-                    src="/sticker-clamshell-pearl.png"
+                    src="/compressed/sticker-clamshell-pearl.webp"
                     alt="Pastel clamshell with pearl"
-                    className="w-full h-auto object-contain drop-shadow-md rotate-[8deg] hover:rotate-[12deg] transition-transform duration-300"
+                    className="w-full h-auto object-contain rotate-[8deg] hover:rotate-[12deg] transition-transform duration-300 boil-alive"
                   />
                 </div>
               </div>
 
               <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full shadow-xs">
                 <img
-                  src="/dress-code.jpg"
+                  src="/compressed/dress-code.webp"
                   alt="Dress Code: Semi-formal attire in pastel colors"
                   className="w-full h-auto rounded-xl object-contain block"
                 />
@@ -464,20 +474,20 @@ export default function Home() {
 
                 {/* Gentle Baby Sea Turtle Sticker placed with -z-1 below the text */}
                 <div 
-                  className="absolute -top-3 -right-5 sm:-right-7 w-16 sm:w-20 pointer-events-none select-none -z-1"
+                  className="absolute -top-3 -right-5 sm:-right-7 w-16 sm:w-20 pointer-events-none select-none -z-1 drop-shadow-xs boil-jiggle"
                   style={{ zIndex: -1 }}
                 >
                   <img
-                    src="/sticker-baby-turtle.png"
+                    src="/compressed/sticker-baby-turtle.webp"
                     alt="Baby sea turtle"
-                    className="w-full h-auto object-contain drop-shadow-xs rotate-[-6deg] opacity-90 transition-transform duration-500"
+                    className="w-full h-auto object-contain rotate-[-6deg] opacity-90 transition-transform duration-500 boil-alive"
                   />
                 </div>
               </div>
 
               <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full shadow-xs">
                 <img
-                  src="/safety-guidelines.jpg"
+                  src="/compressed/safety-guidelines.webp"
                   alt="Safety Guidelines: No smoking, Face mask if you are sick, No kissing, Hand sanitizer"
                   className="w-full h-auto rounded-xl object-contain block"
                 />
@@ -491,11 +501,11 @@ export default function Home() {
               <div className="text-center flex flex-col items-center mb-8 px-2">
                 
                 {/* Whimsical Vintage Treasure Chest Sticker for Gianna's Savings */}
-                <div className="mb-2 w-16 sm:w-20 pointer-events-none select-none">
+                <div className="mb-2 w-16 sm:w-20 pointer-events-none select-none drop-shadow-md boil-jiggle">
                   <img
-                    src="/sticker-treasure-chest.png"
+                    src="/compressed/sticker-treasure-chest.webp"
                     alt="Treasure chest for Gianna's savings"
-                    className="w-full h-auto object-contain drop-shadow-md rotate-[-3deg] hover:rotate-[0deg] transition-transform duration-300"
+                    className="w-full h-auto object-contain rotate-[-3deg] hover:rotate-[0deg] transition-transform duration-300 boil-alive"
                   />
                 </div>
 
@@ -526,11 +536,11 @@ export default function Home() {
                       className={`group relative rounded-2xl border border-stone-200/90 bg-stone-50/80 p-3.5 flex flex-col items-center justify-between text-center transition-all duration-300 hover:scale-[1.02] hover:bg-white hover:border-stone-300 hover:shadow-md ${rotClass}`}
                     >
                       {/* Sticker badge visual with die-cut shadow */}
-                      <div className="h-28 sm:h-32 w-full flex items-center justify-center p-1.5 relative">
+                      <div className="h-28 sm:h-32 w-full flex items-center justify-center p-1.5 relative drop-shadow-[0_2px_6px_rgba(0,0,0,0.07)]">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="max-h-full max-w-full object-contain pointer-events-none select-none transition-transform duration-300 group-hover:scale-105 [filter:drop-shadow(0_1px_1px_rgba(255,255,255,0.9))_drop-shadow(0_4px_8px_rgba(0,0,0,0.1))]"
+                          className="max-h-full max-w-full object-contain pointer-events-none select-none transition-transform duration-300 group-hover:scale-105 boil-alive-subtle"
                         />
                       </div>
 
@@ -552,10 +562,113 @@ export default function Home() {
 
             </div>
 
+            {/* Section: RSVP & See You! (5rem / mt-20 spacing) */}
+            <div className="mt-20 flex flex-col items-center text-center pb-10 relative">
+              
+              {/* Header with "See you!" & Waving Mermaid Sticker */}
+              <div className="relative mb-5 flex flex-col items-center w-full">
+                
+                {/* Joyful Waving Mermaid Sticker (Top Right) */}
+                <div className="absolute -top-12 -right-3 sm:-right-6 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
+                  <img
+                    src="/compressed/sticker-rsvp-mermaid.webp"
+                    alt="Joyful waving mermaid"
+                    className="w-full h-auto object-contain rotate-[6deg] hover:rotate-[12deg] transition-transform duration-300 boil-alive"
+                  />
+                </div>
+
+                <span className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-[#D97A72] mb-1">
+                  We Can't Wait To Celebrate
+                </span>
+                
+                <h3 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none mb-3">
+                  See you!
+                </h3>
+                
+                <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
+                  Your presence would mean the world to us as we welcome Gianna into the Christian world and celebrate her first year.
+                </p>
+              </div>
+
+              {/* RSVP Box Card */}
+              <div className="relative w-full rounded-2xl border border-stone-200 bg-stone-50 overflow-visible p-5 sm:p-6 shadow-xs flex flex-col items-center text-center mt-2">
+                
+                <div className="w-full flex flex-col items-center">
+                  <h4 className="font-cormorant text-xl sm:text-2xl font-bold text-[#183B49] mt-1 mb-1">
+                    RSVP by September 20, 2026
+                  </h4>
+
+                  <p className="text-xs text-stone-500 max-w-xs leading-relaxed mb-5">
+                    Please let us know if you can join us so we can reserve your seat and meal with the venue reception.
+                  </p>
+
+                  {/* Google Form RSVP Button */}
+                  <a
+                    href={RSVP_GOOGLE_FORM_URL || "#"}
+                    target={RSVP_GOOGLE_FORM_URL ? "_blank" : undefined}
+                    rel={RSVP_GOOGLE_FORM_URL ? "noopener noreferrer" : undefined}
+                    onClick={(e) => {
+                      if (!RSVP_GOOGLE_FORM_URL) {
+                        e.preventDefault();
+                        setShowRsvpNotice(true);
+                        setTimeout(() => setShowRsvpNotice(false), 4500);
+                      }
+                    }}
+                    className="group relative w-full max-w-xs flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-[#183B49] text-white hover:bg-[#122e3a] active:scale-[0.98] shadow-sm hover:shadow-md transition-all duration-200 text-xs sm:text-sm font-semibold tracking-wide cursor-pointer"
+                  >
+                    <img
+                      src="/compressed/google-forms-logo.webp"
+                      alt=""
+                      className="w-4 h-auto shrink-0 object-contain transition-transform duration-200 group-hover:scale-110"
+                    />
+                    <span>RSVP via Google Form</span>
+                    <svg
+                      className="w-3.5 h-3.5 shrink-0 opacity-70 transition-transform duration-200 group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+
+                  {/* Gentle interactive notice if Google Form is still being prepared */}
+                  {showRsvpNotice && (
+                    <div className="mt-3 text-[11px] text-[#D97A72] bg-white border border-[#D97A72]/30 px-3.5 py-2 rounded-xl shadow-2xs font-medium max-w-xs animate-in fade-in duration-200">
+                      Google Form will open here once the link is connected!
+                    </div>
+                  )}
+                </div>
+
+                {/* Scuba Diver Sticker (Bottom Left of RSVP Card) */}
+                <div className="absolute -bottom-6 -left-4 sm:-left-6 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
+                  <img
+                    src="/compressed/sticker-scuba-diver.webp"
+                    alt="Cute scuba diver with goggles and tank"
+                    className="w-full h-auto object-contain rotate-[-8deg] hover:rotate-[-3deg] transition-transform duration-300 boil-alive"
+                  />
+                </div>
+
+              </div>
+
+              {/* Warm Sign-off */}
+              <div className="mt-8 flex flex-col items-center text-center">
+                <span className="font-cursive text-3xl sm:text-4xl text-[#183B49]">
+                  With all our love,
+                </span>
+                <span className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.22em] text-stone-500 mt-1">
+                  Gianna & Family
+                </span>
+              </div>
+
+            </div>
+
           </div>
 
         </div>
       </BottomSheet>
+
 
     </div>
   );

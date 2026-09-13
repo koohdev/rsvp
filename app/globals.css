@@ -111,3 +111,73 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
+/* Authentic Hand-Drawn "Boiling Lines" (Line Boil / Squigglevision) Animation */
+@keyframes boilCycle {
+  0%, 100% {
+    filter: url(#boil-frame-1);
+  }
+  20% {
+    filter: url(#boil-frame-2);
+  }
+  40% {
+    filter: url(#boil-frame-3);
+  }
+  60% {
+    filter: url(#boil-frame-4);
+  }
+  80% {
+    filter: url(#boil-frame-5);
+  }
+}
+
+@keyframes boilCycleSubtle {
+  0%, 100% {
+    filter: url(#boil-subtle-1);
+  }
+  25% {
+    filter: url(#boil-subtle-2);
+  }
+  50% {
+    filter: url(#boil-subtle-3);
+  }
+  75% {
+    filter: url(#boil-subtle-4);
+  }
+}
+
+/* Stepped organic micro-jiggle mimicking living paper sketches */
+@keyframes boilJiggle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate3d(-0.6px, 0.4px, 0) rotate(0.4deg);
+  }
+  40% {
+    transform: translate3d(0.5px, -0.4px, 0) rotate(-0.35deg);
+  }
+  60% {
+    transform: translate3d(-0.4px, -0.3px, 0) rotate(0.3deg);
+  }
+  80% {
+    transform: translate3d(0.6px, 0.5px, 0) rotate(-0.4deg);
+  }
+}
+
+.boil-alive {
+  animation: boilCycle 0.52s steps(1) infinite;
+  transform-origin: center center;
+}
+
+.boil-alive-subtle {
+  animation: boilCycleSubtle 0.6s steps(1) infinite;
+  transform-origin: center center;
+}
+
+.boil-jiggle {
+  animation: boilJiggle 0.65s steps(1) infinite;
+  transform-origin: center center;
+}
+
+
+
