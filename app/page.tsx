@@ -485,7 +485,7 @@ export default function Home() {
               <div className="w-full p-4 sm:p-5 flex flex-col items-center text-center">
                 <h3 className="font-cormorant text-lg sm:text-xl font-bold italic uppercase tracking-[0.14em] text-[#183B49] mb-4 text-center leading-snug">
                   <span className="block">COUNTDOWN CELEBRATION</span>
-                  <span className="block">AND LOCATIONS</span>
+                  <span className="block">AND EVENT LOCATION</span>
                 </h3>
 
                 <div className="grid grid-cols-4 w-full divide-x divide-stone-200/80">
@@ -555,16 +555,33 @@ export default function Home() {
             </div>
 
             {/* Transition Route: Church Ceremony -> Venue Reception */}
-            <div className="flex flex-col items-center justify-center my-3 select-none" aria-hidden="true">
-              <div className="w-0.5 h-12 border-l-2 border-dashed border-stone-300" />
-              <svg 
-                className="w-4 h-4 text-stone-400 -mt-0.5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                strokeWidth={2.5}
+            <div className="flex flex-col items-center justify-center my-3.5 select-none" aria-hidden="true">
+              <svg
+                width="24"
+                height="54"
+                viewBox="0 0 24 54"
+                fill="none"
+                className="text-[#183B49] drop-shadow-xs"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                {/* Bold dashed route line */}
+                <line
+                  x1="12"
+                  y1="2"
+                  x2="12"
+                  y2="40"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeDasharray="6 4.5"
+                  strokeLinecap="round"
+                />
+                {/* Bold direction arrow chevron */}
+                <path
+                  d="M6 37L12 47L18 37"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
 
