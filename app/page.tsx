@@ -343,6 +343,39 @@ export default function Home() {
       {/* Main Container - No centered flex */}
       <main className="relative z-10 w-full max-w-md mx-auto h-[100dvh] min-h-[100dvh] overflow-hidden">
         
+        {/* Closed Card Page Header: "You Are Invited" & "Gianna's Baptism & First Birthday" */}
+        <div
+          className={cn(
+            "absolute top-5 sm:top-7 left-0 right-0 z-20 text-center px-4 transition-all duration-500 pointer-events-none select-none",
+            !hasLanded && "stop-motion-button",
+            isOpened ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"
+          )}
+        >
+          <p className="font-cormorant text-2xl sm:text-3xl font-bold italic tracking-[0.14em] text-[#183B49] uppercase drop-shadow-2xs">
+            You Are Invited
+          </p>
+          <p className="font-cormorant text-xs sm:text-sm italic tracking-[0.08em] text-[#183B49]/70 mt-0.5">
+            Gianna&apos;s Baptism & First Birthday
+          </p>
+        </div>
+
+        {/* Animated Swimming Mermaid on Closed Card Page */}
+        <div
+          className={cn(
+            "absolute pointer-events-none select-none z-20 transition-all duration-700",
+            "bottom-[4vh] sm:bottom-[6vh] right-3 sm:right-6 w-24 sm:w-28",
+            isOpened ? "opacity-0 scale-90 translate-y-4" : "opacity-100 scale-100 translate-y-0"
+          )}
+        >
+          <div className="relative mermaid-swimming">
+            <img
+              src="/compressed/mermaid-swimming.webp"
+              alt="Swimming Mermaid"
+              className="w-full h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,100,120,0.22)]"
+            />
+          </div>
+        </div>
+
         {/* Envelope Interactive Stage - Anchored with bottom edge at fixed 52vh baseline */}
         <div 
           onClick={handleCardClick}
@@ -409,7 +442,7 @@ export default function Home() {
               onClick={handleCardClick}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>Click to open Envelope</span>
+              <span>Click the Envelope to View Details</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -510,24 +543,23 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Preview image of Gianna with Baby Mermaid on Seashell Sticker */}
-            <div className="relative w-68 sm:w-76 mx-auto mt-6">
-              <div className="overflow-hidden rounded-2xl shadow-xs">
+            {/* Gianna's Photo with Marine Sea Animals Frame */}
+            <div className="relative w-64 sm:w-72 mx-auto mt-6">
+              {/* Photo placed inside the frame window */}
+              <div className="absolute top-[18.3%] left-[23%] right-[22%] bottom-[24.2%] overflow-hidden rounded-xl bg-stone-100 shadow-inner">
                 <img
                   src="/compressed/gianna.webp"
                   alt="Gianna Isabelle"
-                  className="w-full h-auto object-cover block"
+                  className="w-full h-full object-cover object-center"
                 />
               </div>
 
-              {/* Baby Mermaid on Seashell Sticker */}
-              <div className="absolute -bottom-5 -right-6 sm:-right-8 w-20 sm:w-24 pointer-events-none select-none z-10 drop-shadow-md boil-jiggle">
-                <img
-                  src="/compressed/sticker-mermaid-seashell.webp"
-                  alt="Baby mermaid on seashell"
-                  className="w-full h-auto object-contain rotate-[6deg] hover:rotate-[9deg] transition-transform duration-300 boil-alive"
-                />
-              </div>
+              {/* Decorative Marine Frame on top */}
+              <img
+                src="/compressed/frame-marine.webp"
+                alt="Decorative Marine Animals Frame"
+                className="relative z-10 w-full h-auto block pointer-events-none select-none drop-shadow-md"
+              />
             </div>
 
             {/* Date - Non-italicized numbers and comma */}
@@ -549,9 +581,9 @@ export default function Home() {
               
               {/* Countdown Header inside Box Card 1 */}
               <div className="w-full p-4 sm:p-5 flex flex-col items-center text-center">
-                <h3 className="font-cormorant text-lg sm:text-xl font-bold italic uppercase tracking-[0.14em] text-[#183B49] mb-4 text-center leading-snug">
-                  <span className="block">COUNTDOWN CELEBRATION</span>
-                  <span className="block">AND EVENT LOCATION</span>
+                <h3 className="font-cursive text-4xl sm:text-5xl text-[#183B49] mb-4 text-center leading-snug">
+                  <span className="block">Countdown Celebration</span>
+                  <span className="block text-3xl sm:text-4xl text-[#183B49]/90 mt-0.5">and Event Location</span>
                 </h3>
 
                 <div className="grid grid-cols-4 w-full divide-x divide-stone-200/80">
