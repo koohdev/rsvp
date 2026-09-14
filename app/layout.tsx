@@ -33,7 +33,7 @@ const SITE_URL = (
   "https://gianna-turns-one.vercel.app"
 ).replace(/\/$/, "");
 
-const PREVIEW_IMAGE_URL = `${SITE_URL}/preview.jpg`;
+const PREVIEW_IMAGE_URL = `${SITE_URL}/preview.jpg?v=2`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
