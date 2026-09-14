@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { BottomSheet } from "@/components/motion/bottom-sheet";
 import { EnvelopeBubbleBurst, AmbientBubbles } from "@/components/bubbles";
 import { BoilingFilter } from "@/components/boiling-filter";
+import { cn } from "@/lib/utils";
 
 const giftItems = [
   {
@@ -62,6 +64,40 @@ const giftItems = [
   },
 ];
 
+// Gianna's Underwater Adventure - Template Photo Slots
+// Each image is displayed inside a fixed aspect-ratio template box.
+// To customize: replace image paths, titles, and captions with Gianna's photos.
+const adventurePhotos = [
+  {
+    id: 1,
+    tag: "Milestone 01",
+    title: "Sea Explorer",
+    caption: "Swimming with gentle baby turtle",
+    image: "/compressed/adventure/adventure-1.webp",
+  },
+  {
+    id: 2,
+    tag: "Milestone 02",
+    title: "Pearl of the Sea",
+    caption: "Finding treasures on golden sand",
+    image: "/compressed/adventure/adventure-2.webp",
+  },
+  {
+    id: 3,
+    tag: "Milestone 03",
+    title: "Little Mermaid",
+    caption: "Bubbles and colorful coral reef",
+    image: "/compressed/adventure/adventure-3.webp",
+  },
+  {
+    id: 4,
+    tag: "Milestone 04",
+    title: "Seaside Sun & Puppy",
+    caption: "Beach smiles with puppy friend",
+    image: "/compressed/adventure/adventure-4.webp",
+  },
+];
+
 const TARGET_EVENT_DATE = new Date("2026-10-10T10:00:00+08:00").getTime();
 
 // Google Form URL for RSVP (leave empty or replace with your actual Google Form link)
@@ -91,7 +127,21 @@ export default function Home() {
     seconds: number;
   } | null>(null);
   const [showRsvpNotice, setShowRsvpNotice] = useState(false);
+  const [selectedAdventurePhoto, setSelectedAdventurePhoto] = useState<(typeof adventurePhotos)[number] | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [hasLanded, setHasLanded] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedAdventurePhoto(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Audio references for interactive sound effects & background celebration music
   const popAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -207,6 +257,7 @@ export default function Home() {
   // Handle clicking the envelope or the open button
   const handleCardClick = () => {
     playPopSound();
+    setHasLanded(true);
 
     if (!isOpened) {
       setIsOpened(true);
@@ -233,7 +284,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-white overflow-x-hidden">
+    <div className="relative h-[100dvh] min-h-[100dvh] max-h-[100dvh] w-full bg-white overflow-hidden">
       {/* SVG Filters for hand-drawn boiling lines animation */}
       <BoilingFilter />
 
@@ -290,7 +341,7 @@ export default function Home() {
       </button>
       
       {/* Main Container - No centered flex */}
-      <main className="relative z-10 w-full max-w-md mx-auto min-h-[100dvh]">
+      <main className="relative z-10 w-full max-w-md mx-auto h-[100dvh] min-h-[100dvh] overflow-hidden">
         
         {/* Envelope Interactive Stage - Anchored with bottom edge at fixed 52vh baseline */}
         <div 
@@ -306,8 +357,14 @@ export default function Home() {
           aria-label={isOpened ? "Invitation envelope opened" : "Click to open invitation envelope"}
           className="absolute top-[52vh] left-1/2 -translate-x-1/2 -translate-y-full w-[300px] sm:w-[330px] cursor-pointer outline-none select-none active:scale-[0.99] transition-transform duration-200"
         >
-          {/* Box aligned to bottom so image bottom never shifts */}
-          <div className="relative w-full flex flex-col justify-end h-[345px] sm:h-[380px]">
+          {/* Box aligned to bottom so image bottom never shifts with stop-motion entrance */}
+          <div
+            className={cn(
+              "relative w-full flex flex-col justify-end h-[345px] sm:h-[380px]",
+              !hasLanded && "stop-motion-envelope"
+            )}
+            onAnimationEnd={() => setHasLanded(true)}
+          >
             {/* Bubble burst when envelope opens */}
             <EnvelopeBubbleBurst active={isOpened} />
 
@@ -336,7 +393,12 @@ export default function Home() {
         </div>
 
         {/* Interactive Click to open Button / View details anchored directly below the 52vh baseline */}
-        <div className="absolute top-[52vh] left-0 right-0 pt-4 text-center">
+        <div
+          className={cn(
+            "absolute top-[52vh] left-0 right-0 pt-4 text-center",
+            !hasLanded && "stop-motion-button"
+          )}
+        >
           {!isOpened ? (
             <button
               type="button"
@@ -406,7 +468,7 @@ export default function Home() {
         backgroundImage="/compressed/underwater-bg.webp"
         className="border-stone-200 text-stone-900"
       >
-        <div className="flex flex-col max-w-md mx-auto py-2">
+        <div className="flex flex-col max-w-md mx-auto pt-3 pb-2 sm:pt-5">
           
           {/* Section 1 Header: Arched Invitation Intro & Gianna Preview */}
           <div className="text-center flex flex-col items-center mb-8">
@@ -476,7 +538,7 @@ export default function Home() {
           </div>
 
           {/* Section 1: Countdown & Event Locations (7rem space below Date) */}
-          <div className="pt-[7rem] flex flex-col">
+          <div className="pt-[0rem] flex flex-col">
             
             {/* Box Card 1: Church Ceremony with Countdown Header */}
             <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
@@ -681,11 +743,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Section: Safety Guidelines (5rem / mt-20 space) */}
+            {/* Section: Gianna's Underwater Adventure (5rem / mt-20 space - Replaces Safety Guidelines) */}
             <div className="mt-20 flex flex-col items-center text-center">
-              <div className="relative mb-4 flex items-center justify-center">
+              <div className="relative mb-3 flex items-center justify-center">
                 <h3 className="relative z-10 font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
-                  Safety Guidelines
+                  Gianna's Underwater Adventure
                 </h3>
 
                 {/* Gentle Baby Sea Turtle Sticker placed with -z-1 below the text */}
@@ -701,13 +763,52 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden p-2 sm:p-3 w-full shadow-xs">
-                <img
-                  src="/compressed/safety-guidelines.webp"
-                  alt="Safety Guidelines: No smoking, Face mask if you are sick, No kissing, Hand sanitizer"
-                  className="w-full h-auto rounded-xl object-contain block"
-                />
+              <p className="text-xs sm:text-sm text-stone-600 max-w-xs sm:max-w-sm leading-relaxed font-normal mb-5">
+                Precious milestones, gentle smiles, and sweet memories from Gianna’s first year of ocean wonders.
+              </p>
+
+              {/* Template Fixed Boxes Grid for Adventure Images */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-3.5 w-full">
+                {adventurePhotos.map((photo, idx) => (
+                  <button
+                    key={photo.id}
+                    type="button"
+                    onClick={() => {
+                      playPopSound();
+                      setSelectedAdventurePhoto(photo);
+                    }}
+                    className="group relative rounded-2xl border border-stone-200 bg-stone-50 p-2 sm:p-2.5 flex flex-col text-left shadow-xs hover:shadow-md hover:border-stone-300 transition-all duration-300 cursor-pointer active:scale-[0.98]"
+                  >
+                    {/* Fixed aspect-ratio template image container */}
+                    <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
+                      <img
+                        src={photo.image}
+                        alt={photo.title}
+                        className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {/* Milestone badge */}
+                      <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-[9px] sm:text-[10px] font-bold text-[#183B49] shadow-2xs border border-white/60">
+                        {photo.tag}
+                      </span>
+                    </div>
+
+                    {/* Photo Details */}
+                    <div className="mt-2.5 px-0.5 flex flex-col">
+                      <h4 className="text-xs font-bold text-[#183B49] leading-tight group-hover:text-[#D97A72] transition-colors">
+                        {photo.title}
+                      </h4>
+                      <p className="text-[10px] text-stone-500 leading-snug mt-0.5 line-clamp-1">
+                        {photo.caption}
+                      </p>
+                    </div>
+                  </button>
+                ))}
               </div>
+
+              {/* Click instruction hint */}
+              <span className="text-[11px] text-stone-400 mt-3 font-normal">
+                Tap any photo to view full size
+              </span>
             </div>
 
             {/* Section: Gift Ideas (5rem / mt-20 spacing) */}
@@ -885,6 +986,67 @@ export default function Home() {
         </div>
       </BottomSheet>
 
+      {/* Lightbox Modal for Gianna's Underwater Adventure (Portaled directly to document.body with z-[100] to always sit on top of bottom sheet) */}
+      {mounted && typeof document !== "undefined"
+        ? createPortal(
+            <AnimatePresence>
+              {selectedAdventurePhoto && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-stone-900/80 backdrop-blur-xs"
+                  onClick={() => setSelectedAdventurePhoto(null)}
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0, y: 12 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.9, opacity: 0, y: 12 }}
+                    transition={{ type: "spring", damping: 26, stiffness: 320 }}
+                    className="relative w-full max-w-sm rounded-3xl bg-white p-3.5 sm:p-4 shadow-2xl border border-stone-200 flex flex-col items-center overflow-hidden"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {/* Close Button */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedAdventurePhoto(null)}
+                      className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-white/90 text-stone-700 hover:bg-stone-100 flex items-center justify-center shadow-xs border border-stone-200 transition-transform active:scale-90 cursor-pointer"
+                      aria-label="Close photo preview"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+
+                    {/* Enlarged Photo Container */}
+                    <div className="w-full aspect-square rounded-2xl overflow-hidden bg-stone-100 relative shadow-inner">
+                      <img
+                        src={selectedAdventurePhoto.image}
+                        alt={selectedAdventurePhoto.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 text-[10px] font-bold text-[#183B49] shadow-xs border border-stone-200">
+                        {selectedAdventurePhoto.tag}
+                      </span>
+                    </div>
+
+                    {/* Caption & Title */}
+                    <div className="pt-3.5 pb-1 px-1 text-center w-full">
+                      <h4 className="font-cursive text-3xl sm:text-4xl text-[#183B49] leading-tight">
+                        {selectedAdventurePhoto.title}
+                      </h4>
+                      <p className="text-xs text-stone-600 mt-0.5 leading-relaxed font-normal">
+                        {selectedAdventurePhoto.caption}
+                      </p>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body
+          )
+        : null}
 
     </div>
   );

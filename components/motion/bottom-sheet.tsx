@@ -119,12 +119,13 @@ export function BottomSheet({
               transition={reduce ? { duration: 0.25, ease: EASE_DRAWER } : DRAWER}
               {...gate}
               style={{
-                maxHeight: "88vh",
+                maxHeight: "calc(100dvh - 5rem)",
                 ...gate.style,
               }}
               className={cn(
                 // 0.5rem side padding/margin (left-2 right-2), connected flush to the bottom (bottom-0), overflow-hidden clips to rounded-t-3xl
-                "pointer-events-auto fixed bottom-0 left-2 right-2 z-50 mx-auto flex max-w-lg flex-col rounded-t-3xl overflow-hidden",
+                // Guaranteed top margin via calc(100dvh - 5rem) so it never touches or sticks to the top browser bar on mobile
+                "pointer-events-auto fixed bottom-0 left-2 right-2 z-50 mx-auto flex max-w-lg flex-col rounded-t-3xl overflow-hidden max-h-[calc(100dvh-5rem)]",
                 "border-t border-x border-stone-200 bg-white text-stone-900 shadow-2xl",
                 className
               )}
@@ -146,9 +147,14 @@ export function BottomSheet({
               {/* Ambient Floating Underwater Bubbles inside Bottom Sheet */}
               <AmbientBubbles className="z-1" />
 
+              {/* Top Sheet Drag Handle Indicator */}
+              <div className="w-full flex items-center justify-center pt-3 pb-1 shrink-0 z-20 pointer-events-none select-none">
+                <div className="w-10 h-1.25 rounded-full bg-stone-300/80" />
+              </div>
+
               {/* Close Button at Top Right */}
               {showCloseButton && (
-                <div className="absolute right-4 top-4 z-20">
+                <div className="absolute right-3.5 top-3.5 z-20">
                   <button
                     type="button"
                     onClick={() => onOpenChange(false)}
@@ -190,7 +196,7 @@ export function BottomSheet({
               )}
 
               {/* Natural Scrollable Content Area: free scroll without scrollbar bleeding */}
-              <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-5 pt-4 pb-8 sm:px-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-5 pt-2 pb-8 sm:px-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {children}
               </div>
             </motion.div>
