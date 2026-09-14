@@ -344,20 +344,22 @@ export default function Home() {
       <main className="relative z-10 w-full max-w-md mx-auto h-[100dvh] min-h-[100dvh] overflow-hidden">
         
         {/* Closed Card Page Header: "You Are Invited" & "Gianna's Baptism & First Birthday" */}
-        <div
-          className={cn(
-            "absolute top-5 sm:top-7 left-0 right-0 z-20 text-center px-4 transition-all duration-500 pointer-events-none select-none",
-            !hasLanded && "stop-motion-button",
-            isOpened ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"
-          )}
-        >
-          <p className="font-cormorant text-2xl sm:text-3xl font-bold italic tracking-[0.14em] text-[#183B49] uppercase drop-shadow-2xs">
-            You Are Invited
-          </p>
-          <p className="font-cormorant text-xs sm:text-sm italic tracking-[0.08em] text-[#183B49]/70 mt-0.5">
-            Gianna&apos;s Baptism & First Birthday
-          </p>
-        </div>
+        {!isOpened && (
+          <div
+            className={cn(
+              "absolute left-0 right-0 z-20 text-center px-4 pointer-events-none select-none transition-all duration-300",
+              "top-[calc(52vh-226px)] sm:top-[calc(52vh-250px)] -translate-y-full pb-2 sm:pb-3",
+              !hasLanded && "stop-motion-button"
+            )}
+          >
+            <p className="font-cursive text-4xl sm:text-5xl text-[#183B49] leading-none drop-shadow-2xs">
+              You Are Invited
+            </p>
+            <p className="font-cormorant text-xs sm:text-sm italic tracking-[0.1em] text-[#183B49]/75 mt-1">
+              Gianna&apos;s Baptism & First Birthday
+            </p>
+          </div>
+        )}
 
         {/* Animated Swimming Mermaid on Closed Card Page */}
         <div
@@ -544,21 +546,11 @@ export default function Home() {
             </div>
 
             {/* Gianna's Photo with Marine Sea Animals Frame */}
-            <div className="relative w-64 sm:w-72 mx-auto mt-6">
-              {/* Photo placed inside the frame window */}
-              <div className="absolute top-[18.3%] left-[23%] right-[22%] bottom-[24.2%] overflow-hidden rounded-xl bg-stone-100 shadow-inner">
-                <img
-                  src="/compressed/gianna.webp"
-                  alt="Gianna Isabelle"
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-
-              {/* Decorative Marine Frame on top */}
+            <div className="relative w-[300px] sm:w-[340px] mx-auto mt-6">
               <img
-                src="/compressed/frame-marine.webp"
-                alt="Decorative Marine Animals Frame"
-                className="relative z-10 w-full h-auto block pointer-events-none select-none drop-shadow-md"
+                src="/compressed/gianna-framed.webp"
+                alt="Gianna Isabelle with puppy in decorative marine frame"
+                className="w-full h-auto block drop-shadow-md select-none pointer-events-none"
               />
             </div>
 
