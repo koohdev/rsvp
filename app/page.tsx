@@ -369,10 +369,14 @@ export default function Home() {
             <EnvelopeBubbleBurst active={isOpened} />
 
             <Image
-              src={isOpened ? "/compressed/invitation-card-opened.webp" : "/compressed/invitation-card-closed.webp"}
-              alt={isOpened ? "Opened Invitation Card Envelope" : "Closed Invitation Card Envelope"}
+              src={
+                isOpened
+                  ? "/compressed/invitation-card-underwater-opened.webp"
+                  : "/compressed/invitation-card-underwater-closed.webp"
+              }
+              alt={isOpened ? "Opened Underwater Invitation Envelope" : "Closed Underwater Invitation Envelope"}
               width={714}
-              height={isOpened ? 805 : 458}
+              height={805}
               priority
               className="w-full h-auto object-contain pointer-events-none select-none block"
             />
@@ -381,7 +385,7 @@ export default function Home() {
             {!isOpened && (
               <div className="hidden" aria-hidden="true">
                 <Image
-                  src="/compressed/invitation-card-opened.webp"
+                  src="/compressed/invitation-card-underwater-opened.webp"
                   alt=""
                   width={714}
                   height={805}
@@ -405,7 +409,7 @@ export default function Home() {
               onClick={handleCardClick}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>Click to open</span>
+              <span>Click to open Envelope</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
