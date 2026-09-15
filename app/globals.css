@@ -256,7 +256,9 @@ body::-webkit-scrollbar {
 @media (prefers-reduced-motion: reduce) {
   .stop-motion-envelope,
   .stop-motion-button,
-  .mermaid-swimming {
+  .mermaid-swimming,
+  .ariel-swim,
+  .flounder-swim {
     animation: none !important;
     transform: none !important;
     opacity: 1 !important;
@@ -290,5 +292,50 @@ body::-webkit-scrollbar {
   will-change: transform;
 }
 
+/* Ariel staying in water type swim (gentle hovering & treading water in place) */
+@keyframes arielStaySwim {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(-2.5px, -6px, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(1.5px, -12px, 0) rotate(1.5deg);
+  }
+  75% {
+    transform: translate3d(3px, -5px, 0) rotate(2.5deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
 
+.ariel-swim {
+  animation: arielStaySwim 5.6s ease-in-out infinite;
+  transform-origin: 50% 40%;
+}
 
+/* Flounder staying in water type swim (buoyant joyful bobbing) */
+@keyframes flounderStaySwim {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  30% {
+    transform: translate3d(2px, -6px, 0) rotate(3deg);
+  }
+  65% {
+    transform: translate3d(-2px, -10px, 0) rotate(-2.5deg);
+  }
+  85% {
+    transform: translate3d(1px, -3px, 0) rotate(1.5deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+.flounder-swim {
+  animation: flounderStaySwim 4.2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}

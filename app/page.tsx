@@ -18,13 +18,13 @@ const giftItems = [
   },
   {
     id: 2,
-    image: "/compressed/gift-ideas/2.webp",
-    title: "Mustela Products",
+    image: "/compressed/gift-ideas/cleansing-splash.webp",
+    title: "Sleepy Time Cleansing Splash",
   },
   {
     id: 3,
-    image: "/compressed/gift-ideas/3.webp",
-    title: "Aquaphor Baby Ointment",
+    image: "/compressed/gift-ideas/oral-cleaner.webp",
+    title: "Baby Oral Cleaner",
   },
   {
     id: 4,
@@ -37,15 +37,10 @@ const giftItems = [
     title: "EQ Water Wipes",
   },
   {
-    id: 10,
-    image: "/compressed/gift-ideas/10.webp",
-    title: "Desitin Cream",
-  },
-  {
     id: 8,
-    image: "/compressed/gift-ideas/8.webp",
-    title: "Mamy Poko",
-    note: "Size: Medium & Large",
+    image: "/compressed/gift-ideas/eq-rascals.webp",
+    title: "EQ/Rascals Diaper",
+    note: "Size: Large",
   },
   {
     id: 9,
@@ -64,44 +59,97 @@ const giftItems = [
   },
 ];
 
-// Gianna's Underwater Adventure - Template Photo Slots
-// Each image is displayed inside a fixed aspect-ratio template box.
-// To customize: replace image paths, titles, and captions with Gianna's photos.
+// Gianna's Monthly Milestones - Ocean Princess Photos
 const adventurePhotos = [
   {
     id: 1,
-    tag: "Milestone 01",
-    title: "Sea Explorer",
-    caption: "Swimming with gentle baby turtle",
-    image: "/compressed/adventure/adventure-1.webp",
+    tag: "Newborn",
+    title: "Newborn",
+    image: "/compressed/milestones/newborn.webp",
   },
   {
     id: 2,
-    tag: "Milestone 02",
-    title: "Pearl of the Sea",
-    caption: "Finding treasures on golden sand",
-    image: "/compressed/adventure/adventure-2.webp",
+    tag: "1st Month",
+    title: "Princess Jasmine",
+    image: "/compressed/milestones/1st_month_as_jasmin.webp",
   },
   {
     id: 3,
-    tag: "Milestone 03",
-    title: "Little Mermaid",
-    caption: "Bubbles and colorful coral reef",
-    image: "/compressed/adventure/adventure-3.webp",
+    tag: "2nd Month",
+    title: "Snow White",
+    image: "/compressed/milestones/2nd_month_as_snow_white.webp",
   },
   {
     id: 4,
-    tag: "Milestone 04",
-    title: "Seaside Sun & Puppy",
-    caption: "Beach smiles with puppy friend",
-    image: "/compressed/adventure/adventure-4.webp",
+    tag: "3rd Month",
+    title: "Rapunzel",
+    image: "/compressed/milestones/3rd_month_as_rapunzel.webp",
+  },
+  {
+    id: 5,
+    tag: "4th Month",
+    title: "Mulan",
+    image: "/compressed/milestones/4th_month_as_mulan.webp",
+  },
+  {
+    id: 6,
+    tag: "5th Month",
+    title: "Princess Anna",
+    image: "/compressed/milestones/5th_month_as_princess_anna.webp",
+  },
+  {
+    id: 7,
+    tag: "6th Month",
+    title: "Sleeping Beauty",
+    image: "/compressed/milestones/6th_months_as_sleeping_beauty.webp",
+  },
+  {
+    id: 8,
+    tag: "7th Month",
+    title: "Cinderella",
+    image: "/compressed/milestones/7th_months_as_cinderella.webp",
+  },
+  {
+    id: 9,
+    tag: "8th Month",
+    title: "Princess Tiana",
+    image: "/compressed/milestones/8th_months_as_princess_tianna.webp",
+  },
+  {
+    id: 10,
+    tag: "9th Month",
+    title: "Pocahontas",
+    image: "/compressed/milestones/9th_months_as_pocahontas.webp",
   },
 ];
 
 const TARGET_EVENT_DATE = new Date("2026-10-10T10:00:00+08:00").getTime();
 
-// Google Form URL for RSVP (leave empty or replace with your actual Google Form link)
-const RSVP_GOOGLE_FORM_URL = "";
+// Google Form URL for RSVP
+const RSVP_GOOGLE_FORM_URL = "https://forms.gle/XjWPysCDnyvRaA1c6";
+
+// Godparents list (Ninang & Ninong)
+const godmothers = [
+  "Christine Facun",
+  "Joyce Salvador – Villanueva",
+  "Joy Aurora Lora",
+  "Dianna Riccie Aguda",
+  "Kristine Dizon",
+  "Claudine Caliuag",
+];
+
+const godfathers = [
+  "Lloyd Vincent Turato",
+  "Ronald Diego Mariano",
+  "Kem Salvacion",
+  "Charlemagne Molina",
+  "Rolan Jay Burgos",
+  "Kelly Clark Magana",
+  "Angelo Devota",
+  "Al John Lozano",
+  "Justin Emmanuel Hipolito",
+  "Isais Hinaggon Pascual",
+];
 
 function calculateTimeUntilEvent() {
   const diff = TARGET_EVENT_DATE - Date.now();
@@ -128,6 +176,7 @@ export default function Home() {
   } | null>(null);
   const [showRsvpNotice, setShowRsvpNotice] = useState(false);
   const [selectedAdventurePhoto, setSelectedAdventurePhoto] = useState<(typeof adventurePhotos)[number] | null>(null);
+  const [showAllMilestones, setShowAllMilestones] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [hasLanded, setHasLanded] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -356,27 +405,11 @@ export default function Home() {
               You Are Invited
             </p>
             <p className="font-cormorant text-xs sm:text-sm italic tracking-[0.1em] text-[#183B49]/75 mt-1">
-              Gianna&apos;s Baptism & First Birthday
+              Gianna&apos;s Christening & First Birthday
             </p>
           </div>
         )}
 
-        {/* Animated Swimming Mermaid on Closed Card Page */}
-        <div
-          className={cn(
-            "absolute pointer-events-none select-none z-20 transition-all duration-700",
-            "bottom-[4vh] sm:bottom-[6vh] right-3 sm:right-6 w-24 sm:w-28",
-            isOpened ? "opacity-0 scale-90 translate-y-4" : "opacity-100 scale-100 translate-y-0"
-          )}
-        >
-          <div className="relative mermaid-swimming">
-            <img
-              src="/compressed/mermaid-swimming.webp"
-              alt="Swimming Mermaid"
-              className="w-full h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,100,120,0.22)]"
-            />
-          </div>
-        </div>
 
         {/* Envelope Interactive Stage - Anchored with bottom edge at fixed 52vh baseline */}
         <div 
@@ -390,12 +423,12 @@ export default function Home() {
             }
           }}
           aria-label={isOpened ? "Invitation envelope opened" : "Click to open invitation envelope"}
-          className="absolute top-[52vh] left-1/2 -translate-x-1/2 -translate-y-full w-[300px] sm:w-[330px] cursor-pointer outline-none select-none active:scale-[0.99] transition-transform duration-200"
+          className="absolute top-[52vh] left-1/2 -translate-x-1/2 -translate-y-full w-[285px] min-[375px]:w-[300px] sm:w-[330px] cursor-pointer outline-none select-none active:scale-[0.99] transition-transform duration-200"
         >
           {/* Box aligned to bottom so image bottom never shifts with stop-motion entrance */}
           <div
             className={cn(
-              "relative w-full flex flex-col justify-end h-[345px] sm:h-[380px]",
+              "relative w-full flex flex-col justify-end h-[330px] min-[375px]:h-[345px] sm:h-[380px]",
               !hasLanded && "stop-motion-envelope"
             )}
             onAnimationEnd={() => setHasLanded(true)}
@@ -415,6 +448,40 @@ export default function Home() {
               priority
               className="w-full h-auto object-contain pointer-events-none select-none block"
             />
+
+            {/* Ariel staying in water swim - positioned on lower left exactly matching preview */}
+            <div
+              className="absolute -left-[42px] min-[375px]:-left-[46px] sm:-left-[52px] -bottom-[3px] min-[375px]:-bottom-[4px] sm:-bottom-[6px] w-[88px] min-[375px]:w-[94px] sm:w-[104px] z-20 pointer-events-none select-none"
+              aria-hidden="true"
+            >
+              <div className="ariel-swim drop-shadow-md">
+                <Image
+                  src="/compressed/ariel.webp"
+                  alt="Ariel swimming"
+                  width={203}
+                  height={358}
+                  priority
+                  className="w-full h-auto object-contain pointer-events-none select-none block"
+                />
+              </div>
+            </div>
+
+            {/* Flounder staying in water swim - positioned at bottom right corner matching preview */}
+            <div
+              className="absolute -right-[18px] min-[375px]:-right-[22px] sm:-right-[26px] -bottom-[11px] min-[375px]:-bottom-[13px] sm:-bottom-[16px] w-[72px] min-[375px]:w-[78px] sm:w-[86px] z-20 pointer-events-none select-none"
+              aria-hidden="true"
+            >
+              <div className="flounder-swim drop-shadow-sm">
+                <Image
+                  src="/compressed/ariel-fish.webp"
+                  alt="Flounder"
+                  width={141}
+                  height={132}
+                  priority
+                  className="w-full h-auto object-contain pointer-events-none select-none block"
+                />
+              </div>
+            </div>
 
             {/* Preload opened envelope for instant replacement */}
             {!isOpened && (
@@ -444,7 +511,7 @@ export default function Home() {
               onClick={handleCardClick}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>Click the Envelope to View Details</span>
+              <span>Click the Envelope to Open</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -467,7 +534,7 @@ export default function Home() {
               }}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>View Details</span>
+              <span>Tap the Envelope to View Details</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -517,7 +584,7 @@ export default function Home() {
               <svg
                 viewBox="0 0 440 120"
                 className="w-full h-auto overflow-visible select-none"
-                aria-label="Join us for the baptism and 1st birthday of"
+                aria-label="Join us for Christening and 1st birthday of"
               >
                 <path
                   id="header-arc"
@@ -529,7 +596,7 @@ export default function Home() {
                   textAnchor="middle"
                 >
                   <textPath href="#header-arc" startOffset="50%">
-                    JOIN US FOR THE BAPTISM AND 1ST BIRTHDAY OF
+                    JOIN US FOR CHRISTENING AND 1ST BIRTHDAY OF
                   </textPath>
                 </text>
               </svg>
@@ -604,7 +671,7 @@ export default function Home() {
               <div className="px-4 sm:px-5 w-full">
                 <div className="w-full h-48 sm:h-56 relative bg-stone-100 rounded-xl overflow-hidden shadow-2xs border border-stone-200/70">
                   <img
-                    src="/compressed/church.webp"
+                    src="/immaculate.jpg"
                     alt="Immaculate Conception Parish Church (Concepcion)"
                     className="w-full h-full object-cover"
                   />
@@ -795,9 +862,9 @@ export default function Home() {
                 Precious milestones, gentle smiles, and sweet memories from Gianna’s first year of ocean wonders.
               </p>
 
-              {/* Template Fixed Boxes Grid for Adventure Images */}
+              {/* Template Fixed Boxes Grid for Adventure Images (Initial 4) */}
               <div className="grid grid-cols-2 gap-3 sm:gap-3.5 w-full">
-                {adventurePhotos.map((photo, idx) => (
+                {adventurePhotos.slice(0, 4).map((photo) => (
                   <button
                     key={photo.id}
                     type="button"
@@ -820,14 +887,11 @@ export default function Home() {
                       </span>
                     </div>
 
-                    {/* Photo Details */}
+                    {/* Photo Details without subtitle */}
                     <div className="mt-2.5 px-0.5 flex flex-col">
                       <h4 className="text-xs font-bold text-[#183B49] leading-tight group-hover:text-[#D97A72] transition-colors">
                         {photo.title}
                       </h4>
-                      <p className="text-[10px] text-stone-500 leading-snug mt-0.5 line-clamp-1">
-                        {photo.caption}
-                      </p>
                     </div>
                   </button>
                 ))}
@@ -837,6 +901,91 @@ export default function Home() {
               <span className="text-[11px] text-stone-400 mt-3 font-normal">
                 Tap any photo to view full size
               </span>
+
+              {/* View More Button at the bottom of the hint */}
+              <div className="w-full flex flex-col items-center mt-3.5">
+                {!showAllMilestones ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playPopSound();
+                      setShowAllMilestones(true);
+                    }}
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-stone-200 bg-white hover:bg-stone-50 active:scale-95 text-xs font-semibold text-[#183B49] shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+                  >
+                    <span>View More Photos ({adventurePhotos.length - 4})</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-3.5 h-3.5 text-[#183B49]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                ) : (
+                  <div className="w-full flex flex-col items-center">
+                    {/* Remaining Milestone Photos */}
+                    <div className="grid grid-cols-2 gap-3 sm:gap-3.5 w-full mt-3">
+                      {adventurePhotos.slice(4).map((photo) => (
+                        <button
+                          key={photo.id}
+                          type="button"
+                          onClick={() => {
+                            playPopSound();
+                            setSelectedAdventurePhoto(photo);
+                          }}
+                          className="group relative rounded-2xl border border-stone-200 bg-stone-50 p-2 sm:p-2.5 flex flex-col text-left shadow-xs hover:shadow-md hover:border-stone-300 transition-all duration-300 cursor-pointer active:scale-[0.98]"
+                        >
+                          {/* Fixed aspect-ratio template image container */}
+                          <div className="w-full aspect-square rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
+                            <img
+                              src={photo.image}
+                              alt={photo.title}
+                              className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
+                            />
+                            {/* Milestone badge */}
+                            <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-xs text-[9px] sm:text-[10px] font-bold text-[#183B49] shadow-2xs border border-white/60">
+                              {photo.tag}
+                            </span>
+                          </div>
+
+                          {/* Photo Details without subtitle */}
+                          <div className="mt-2.5 px-0.5 flex flex-col">
+                            <h4 className="text-xs font-bold text-[#183B49] leading-tight group-hover:text-[#D97A72] transition-colors">
+                              {photo.title}
+                            </h4>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Show Less Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        playPopSound();
+                        setShowAllMilestones(false);
+                      }}
+                      className="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full border border-stone-200 bg-white hover:bg-stone-50 active:scale-95 text-xs font-semibold text-[#183B49] shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+                    >
+                      <span>Show Less</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-3.5 h-3.5 text-[#183B49]"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Section: Gift Ideas (5rem / mt-20 spacing) */}
@@ -874,11 +1023,18 @@ export default function Home() {
                     "hover:rotate-1 rotate-[-2deg]",
                   ];
                   const rotClass = rotations[idx % rotations.length];
+                  const isCentered =
+                    item.title === "Montessori Wooden Toys" ||
+                    (idx === giftItems.length - 1 && giftItems.length % 2 === 1);
 
                   return (
                     <div
                       key={item.id}
-                      className={`group relative rounded-2xl border border-stone-200/90 bg-stone-50/80 p-3.5 flex flex-col items-center justify-between text-center transition-all duration-300 hover:scale-[1.02] hover:bg-white hover:border-stone-300 hover:shadow-md ${rotClass}`}
+                      className={cn(
+                        "group relative rounded-2xl border border-stone-200/90 bg-stone-50/80 p-3.5 flex flex-col items-center justify-between text-center transition-all duration-300 hover:scale-[1.02] hover:bg-white hover:border-stone-300 hover:shadow-md",
+                        rotClass,
+                        isCentered && "col-span-2 mx-auto justify-self-center w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.4375rem)]"
+                      )}
                     >
                       {/* Sticker badge visual with die-cut shadow */}
                       <div className="h-28 sm:h-32 w-full flex items-center justify-center p-1.5 relative drop-shadow-[0_2px_6px_rgba(0,0,0,0.07)]">
@@ -907,6 +1063,102 @@ export default function Home() {
 
             </div>
 
+            {/* Section: Godparents (5rem / mt-20 spacing) */}
+            <div className="mt-20 flex flex-col items-center text-center">
+              <div className="relative mb-6 flex flex-col items-center">
+                {/* Mermaid with Seashell Sticker */}
+                <div className="mb-2 w-16 sm:w-20 pointer-events-none select-none drop-shadow-md boil-jiggle">
+                  <img
+                    src="/compressed/sticker-mermaid-seashell.webp"
+                    alt="Mermaid with seashell"
+                    className="w-full h-auto object-contain rotate-[3deg] hover:rotate-[-2deg] transition-transform duration-300 boil-alive"
+                  />
+                </div>
+
+                <span className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-[#D97A72] mb-1">
+                  Faith, Love & Guidance
+                </span>
+
+                <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
+                  Godparents
+                </h3>
+
+              </div>
+
+              {/* Two-Column Card for Ninang & Ninong with Underwater Decorative Frame */}
+              <div className="relative w-full">
+                
+                {/* Underwater Decorative Frame sitting OUTSIDE the Card Layout */}
+                <div 
+                  className="pointer-events-none absolute -inset-3 sm:-inset-4 z-0 select-none overflow-visible"
+                  aria-hidden="true"
+                >
+                  <img
+                    src="/compressed/godparents-frame-outside.webp"
+                    alt=""
+                    className="w-full h-full object-fill pointer-events-none drop-shadow-xs"
+                  />
+                </div>
+
+                {/* The Card Content */}
+                <div className="relative z-10 w-full rounded-2xl border border-stone-200/90 bg-stone-50 overflow-hidden shadow-xs pt-5 pb-6 px-4 sm:px-6 text-left">
+                  <div className="grid grid-cols-2 divide-x divide-stone-200/80">
+                    
+                    {/* Ninang Column */}
+                    <div className="pr-3 sm:pr-4 flex flex-col">
+                      <div className="pb-2.5 mb-3.5 border-b border-stone-200/80 text-center">
+                        <span className="font-cormorant text-base sm:text-lg font-bold text-[#183B49] tracking-wider uppercase">
+                          Ninang
+                        </span>
+                      </div>
+
+                      <ol className="space-y-2.5">
+                        {godmothers.map((name, idx) => (
+                          <li
+                            key={name}
+                            className="flex items-start gap-1.5 text-stone-700 leading-snug"
+                          >
+                            <span className="text-[10px] sm:text-xs font-mono font-medium text-stone-400 shrink-0 mt-0.5 tabular-nums">
+                              {idx + 1}.
+                            </span>
+                            <span className="text-xs sm:text-[13px] font-medium text-stone-800 break-words">
+                              {name}
+                            </span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+
+                    {/* Ninong Column */}
+                    <div className="pl-3 sm:pl-4 flex flex-col">
+                      <div className="pb-2.5 mb-3.5 border-b border-stone-200/80 text-center">
+                        <span className="font-cormorant text-base sm:text-lg font-bold text-[#183B49] tracking-wider uppercase">
+                          Ninong
+                        </span>
+                      </div>
+
+                      <ol className="space-y-2.5">
+                        {godfathers.map((name, idx) => (
+                          <li
+                            key={name}
+                            className="flex items-start gap-1.5 text-stone-700 leading-snug"
+                          >
+                            <span className="text-[10px] sm:text-xs font-mono font-medium text-stone-400 shrink-0 mt-0.5 tabular-nums">
+                              {idx + 1}.
+                            </span>
+                            <span className="text-xs sm:text-[13px] font-medium text-stone-800 break-words">
+                              {name}
+                            </span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Section: RSVP & See You! (5rem / mt-20 spacing) */}
             <div className="mt-20 flex flex-col items-center text-center pb-10 relative">
               
@@ -930,7 +1182,7 @@ export default function Home() {
                 
                 <div className="w-full flex flex-col items-center">
                   <h4 className="font-cormorant text-xl sm:text-2xl font-bold text-[#183B49] mt-1 mb-1">
-                    RSVP by September 20, 2026
+                    RSVP by September 26, 2026
                   </h4>
 
                   <p className="text-xs text-stone-500 max-w-xs leading-relaxed mb-5">
@@ -1059,14 +1311,11 @@ export default function Home() {
                       </span>
                     </div>
 
-                    {/* Caption & Title */}
+                    {/* Title */}
                     <div className="pt-3.5 pb-1 px-1 text-center w-full">
                       <h4 className="font-cursive text-3xl sm:text-4xl text-[#183B49] leading-tight">
                         {selectedAdventurePhoto.title}
                       </h4>
-                      <p className="text-xs text-stone-600 mt-0.5 leading-relaxed font-normal">
-                        {selectedAdventurePhoto.caption}
-                      </p>
                     </div>
                   </motion.div>
                 </motion.div>

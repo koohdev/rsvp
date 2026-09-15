@@ -33,27 +33,27 @@ const SITE_URL = (
   "https://gianna-turns-one.vercel.app"
 ).replace(/\/$/, "");
 
-const PREVIEW_IMAGE_URL = `${SITE_URL}/preview.jpg?v=2`;
+const PREVIEW_IMAGE_URL = `${SITE_URL}/preview.jpg?v=3`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "You're invited to Gianna's Baptism and First Birthday",
+  title: "You're invited to Gianna's Christening and First Birthday",
   description: "Tap here to RSVP",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "You're invited to Gianna's Baptism and First Birthday",
+    title: "You're invited to Gianna's Christening and First Birthday",
     description: "Tap here to RSVP",
     url: SITE_URL,
-    siteName: "Gianna's 1st Birthday & Baptism",
+    siteName: "Gianna's 1st Birthday & Christening",
     images: [
       {
         url: PREVIEW_IMAGE_URL,
         secureUrl: PREVIEW_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "You're invited to Gianna's Baptism and First Birthday",
+        alt: "You're invited to Gianna's Christening and First Birthday",
         type: "image/jpeg",
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "You're invited to Gianna's Baptism and First Birthday",
+    title: "You're invited to Gianna's Christening and First Birthday",
     description: "Tap here to RSVP",
     images: [PREVIEW_IMAGE_URL],
   },
