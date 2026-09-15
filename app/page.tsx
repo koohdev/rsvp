@@ -612,11 +612,11 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Gianna's Photo with Marine Sea Animals Frame */}
-            <div className="relative w-[300px] sm:w-[340px] mx-auto mt-6">
+            {/* Gianna's First Preview Card */}
+            <div className="relative w-[345px] min-[375px]:w-[365px] sm:w-[405px] mx-auto mt-6">
               <img
-                src="/compressed/gianna-framed.webp"
-                alt="Gianna Isabelle with puppy in decorative marine frame"
+                src="/compressed/first-preview-card.webp"
+                alt="Gianna Isabelle Photo Cards with Ariel"
                 className="w-full h-auto block drop-shadow-md select-none pointer-events-none"
               />
             </div>
