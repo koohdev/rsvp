@@ -7,7 +7,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { BottomSheet } from "@/components/motion/bottom-sheet";
 import { EnvelopeBubbleBurst, AmbientBubbles } from "@/components/bubbles";
 import { BoilingFilter } from "@/components/boiling-filter";
-import { KislapSparkle, KislapCluster, KislapBituinBackground } from "@/components/kislap";
+import {
+  KislapSparkle,
+  KislapCluster,
+  KislapBituinBackground,
+} from "@/components/kislap";
 import { cn } from "@/lib/utils";
 
 const giftItems = [
@@ -183,7 +187,9 @@ export default function Home() {
     seconds: number;
   } | null>(null);
   const [showRsvpNotice, setShowRsvpNotice] = useState(false);
-  const [selectedAdventurePhoto, setSelectedAdventurePhoto] = useState<(typeof adventurePhotos)[number] | null>(null);
+  const [selectedAdventurePhoto, setSelectedAdventurePhoto] = useState<
+    (typeof adventurePhotos)[number] | null
+  >(null);
   const [showAllMilestones, setShowAllMilestones] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [hasLanded, setHasLanded] = useState(false);
@@ -225,7 +231,9 @@ export default function Home() {
     waterBubbleAudioRef.current = water;
 
     // Happy Birthday (Mandolin Version) celebration music
-    const music = new Audio(encodeURI("/Happy Birthday (Mandolin Version).mp3"));
+    const music = new Audio(
+      encodeURI("/Happy Birthday (Mandolin Version).mp3"),
+    );
     music.volume = 0.65;
     music.loop = true;
     music.preload = "auto";
@@ -396,14 +404,11 @@ export default function Home() {
           </svg>
         )}
       </button>
-      
+
       {/* Main Container - No centered flex */}
       <main className="relative z-10 w-full max-w-md mx-auto h-[100dvh] min-h-[100dvh] overflow-hidden">
-        
-
-
         {/* Envelope Interactive Stage - Anchored with bottom edge at fixed 52vh baseline */}
-        <div 
+        <div
           onClick={handleCardClick}
           role="button"
           tabIndex={0}
@@ -413,14 +418,18 @@ export default function Home() {
               handleCardClick();
             }
           }}
-          aria-label={isOpened ? "Invitation envelope opened" : "Click to open invitation envelope"}
+          aria-label={
+            isOpened
+              ? "Invitation envelope opened"
+              : "Click to open invitation envelope"
+          }
           className="absolute top-[52vh] left-1/2 -translate-x-1/2 -translate-y-full w-[285px] min-[375px]:w-[300px] sm:w-[330px] cursor-pointer outline-none select-none active:scale-[0.99] transition-transform duration-200"
         >
           {/* Box aligned to bottom so image bottom never shifts with stop-motion entrance */}
           <div
             className={cn(
               "relative w-full flex flex-col justify-end h-[330px] min-[375px]:h-[345px] sm:h-[380px]",
-              !hasLanded && "stop-motion-envelope"
+              !hasLanded && "stop-motion-envelope",
             )}
             onAnimationEnd={() => setHasLanded(true)}
           >
@@ -434,7 +443,11 @@ export default function Home() {
                     ? "/compressed/invitation-card-underwater-opened.webp"
                     : "/compressed/invitation-card-underwater-closed.webp"
                 }
-                alt={isOpened ? "Opened Underwater Invitation Envelope" : "Closed Underwater Invitation Envelope"}
+                alt={
+                  isOpened
+                    ? "Opened Underwater Invitation Envelope"
+                    : "Closed Underwater Invitation Envelope"
+                }
                 width={714}
                 height={805}
                 priority
@@ -510,7 +523,7 @@ export default function Home() {
         <div
           className={cn(
             "absolute top-[52vh] left-0 right-0 pt-4 text-center",
-            !hasLanded && "stop-motion-button"
+            !hasLanded && "stop-motion-button",
           )}
         >
           {!isOpened ? (
@@ -519,7 +532,9 @@ export default function Home() {
               onClick={handleCardClick}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span className="tracking-wider uppercase font-semibold text-[11px] sm:text-xs">CLICK THE ENVELOPE</span>
+              <span className="tracking-wider uppercase font-semibold text-[11px] sm:text-xs">
+                CLICK THE ENVELOPE
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -542,7 +557,9 @@ export default function Home() {
               }}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span className="uppercase">Tap the Envelope to View Details</span>
+              <span className="uppercase">
+                Tap the Envelope to View Details
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -560,7 +577,6 @@ export default function Home() {
             </button>
           )}
         </div>
-
       </main>
 
       {/* Ambient floating bubbles across the screen while bottom sheet is open */}
@@ -585,10 +601,9 @@ export default function Home() {
         <div className="relative flex flex-col max-w-md mx-auto pt-3 pb-2 sm:pt-5">
           {/* Ambient Twinkling Stars (Kislap / Bituin) throughout the Bottom Sheet */}
           <KislapBituinBackground />
-          
+
           {/* Section 1 Header: Arched Invitation Intro & Gianna Preview */}
           <div className="text-center flex flex-col items-center mb-8 relative z-10">
-            
             {/* Header: Join Us For Christening And 1st Birthday */}
             <div className="w-full max-w-[360px] sm:max-w-[400px] mx-auto flex flex-col items-center text-center">
               <div className="flex flex-col items-center text-center">
@@ -598,8 +613,12 @@ export default function Home() {
                 <p className="font-cormorant text-base sm:text-lg font-bold tracking-[0.16em] sm:tracking-[0.18em] text-[#183B49] uppercase leading-snug">
                   AND{" "}
                   <span className="tracking-normal inline-flex items-baseline gap-0.5">
-                    <span className="font-sans font-bold text-[15px] sm:text-[20px]">1</span>
-                    <span className="uppercase text-base sm:text-lg font-bold font-cormorant">ST</span>
+                    <span className="font-sans font-bold text-[15px] sm:text-[20px]">
+                      1
+                    </span>
+                    <span className="uppercase text-base sm:text-lg font-bold font-cormorant">
+                      ST
+                    </span>
                   </span>{" "}
                   BIRTHDAY OF
                 </p>
@@ -615,7 +634,10 @@ export default function Home() {
                 <h2 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none">
                   Gianna Isabelle
                 </h2>
-                <KislapCluster className="absolute -top-3 -right-6" color="#F59E0B" />
+                <KislapCluster
+                  className="absolute -top-3 -right-6"
+                  color="#F59E0B"
+                />
                 <KislapSparkle
                   size={14}
                   color="#38BDF8"
@@ -627,7 +649,10 @@ export default function Home() {
 
             {/* Gianna's First Preview Card with corner fairy sparkles */}
             <div className="relative w-[345px] min-[375px]:w-[365px] sm:w-[405px] mx-auto mt-6">
-              <KislapCluster className="absolute -top-3 -right-2 z-20" color="#FBBF24" />
+              <KislapCluster
+                className="absolute -top-3 -right-2 z-20"
+                color="#FBBF24"
+              />
               <KislapSparkle
                 size={16}
                 color="#7DD3FC"
@@ -654,7 +679,6 @@ export default function Home() {
 
           {/* Section 1: Countdown & Event Locations (7rem space below Date) */}
           <div className="pt-[0rem] flex flex-col relative z-10">
-            
             {/* Box Card 1: Church Ceremony with Countdown Header */}
             <div className="relative rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
               <KislapSparkle
@@ -663,20 +687,43 @@ export default function Home() {
                 className="absolute top-3.5 right-3.5 z-10"
                 style={{ animationDuration: "2.8s", animationDelay: "-0.6s" }}
               />
-              
+
               {/* Countdown Header inside Box Card 1 */}
               <div className="w-full p-4 sm:p-5 flex flex-col items-center text-center">
-                <h3 className="text-xl font-bold tracking-wide text-[#183B49] mb-4 text-center leading-snug">
+                <h3 className="font-cormorant text-2xl sm:text-3xl font-bold tracking-wide text-[#183B49] mb-4 text-center leading-snug">
                   <span className="block">Countdown Celebration</span>
-                  <span className="block text-xl  text-[#183B49]/90 mt-0.5">and Event Location</span>
+                  <span className="block text-xl sm:text-2xl text-[#183B49]/90 mt-0.5">
+                    and Event Location
+                  </span>
                 </h3>
 
                 <div className="grid grid-cols-4 w-full divide-x divide-stone-200/80">
                   {[
-                    { label: "Days", value: timeLeft !== null ? String(timeLeft.days) : "--" },
-                    { label: "Hours", value: timeLeft !== null ? String(timeLeft.hours).padStart(2, "0") : "--" },
-                    { label: "Minutes", value: timeLeft !== null ? String(timeLeft.minutes).padStart(2, "0") : "--" },
-                    { label: "Seconds", value: timeLeft !== null ? String(timeLeft.seconds).padStart(2, "0") : "--" },
+                    {
+                      label: "Days",
+                      value: timeLeft !== null ? String(timeLeft.days) : "--",
+                    },
+                    {
+                      label: "Hours",
+                      value:
+                        timeLeft !== null
+                          ? String(timeLeft.hours).padStart(2, "0")
+                          : "--",
+                    },
+                    {
+                      label: "Minutes",
+                      value:
+                        timeLeft !== null
+                          ? String(timeLeft.minutes).padStart(2, "0")
+                          : "--",
+                    },
+                    {
+                      label: "Seconds",
+                      value:
+                        timeLeft !== null
+                          ? String(timeLeft.seconds).padStart(2, "0")
+                          : "--",
+                    },
                   ].map((item) => (
                     <div
                       key={item.label}
@@ -715,8 +762,8 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className=" text-lg font-bold text-[#183B49] leading-tight mt-0.5">
-                  Immaculate Conception Parish Church
+                <h3 className="font-cormorant text-2xl sm:text-3xl font-bold text-[#183B49] leading-tight mt-0.5">
+                  Immaculate Conception<br></br>Parish Church
                 </h3>
 
                 <div className="pt-2">
@@ -766,7 +813,7 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <h3 className=" text-lg  font-bold text-[#183B49] leading-tight mt-0.5">
+                  <h3 className="font-cormorant text-2xl sm:text-3xl font-bold text-[#183B49] leading-tight mt-0.5">
                     Benedictines Resort
                   </h3>
 
@@ -823,7 +870,10 @@ export default function Home() {
                     size={16}
                     color="#FBBF24"
                     className="absolute -top-2 -right-5"
-                    style={{ animationDuration: "2.9s", animationDelay: "-1.0s" }}
+                    style={{
+                      animationDuration: "2.9s",
+                      animationDelay: "-1.0s",
+                    }}
                   />
                 </div>
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
@@ -856,11 +906,14 @@ export default function Home() {
                   <h3 className="relative z-10 font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
                     Gianna's Underwater Adventure
                   </h3>
-                  <KislapCluster className="absolute -top-3 -right-7 z-20" color="#38BDF8" />
+                  <KislapCluster
+                    className="absolute -top-3 -right-7 z-20"
+                    color="#38BDF8"
+                  />
                 </div>
 
                 {/* Gentle Baby Sea Turtle Sticker placed with -z-1 below the text */}
-                <div 
+                <div
                   className="absolute -top-3 -right-5 sm:-right-7 w-16 sm:w-20 pointer-events-none select-none -z-1 drop-shadow-xs boil-jiggle"
                   style={{ zIndex: -1 }}
                 >
@@ -873,7 +926,8 @@ export default function Home() {
               </div>
 
               <p className="text-xs sm:text-sm text-stone-600 max-w-xs sm:max-w-sm leading-relaxed font-normal mb-5">
-                Precious milestones, gentle smiles, and sweet memories from Gianna’s first year of ocean wonders.
+                Precious milestones, gentle smiles, and sweet memories from
+                Gianna’s first year of ocean wonders.
               </p>
 
               {/* Template Fixed Boxes Grid for Adventure Images (Initial 4) */}
@@ -936,7 +990,11 @@ export default function Home() {
                       stroke="currentColor"
                       strokeWidth="2.2"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
                 ) : (
@@ -994,7 +1052,11 @@ export default function Home() {
                         stroke="currentColor"
                         strokeWidth="2.2"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 15l7-7 7 7"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -1004,10 +1066,8 @@ export default function Home() {
 
             {/* Section: Gift Ideas (5rem / mt-20 spacing) */}
             <div className="mt-20 flex flex-col pb-4">
-              
               {/* Header: Centered Gift Ideas + Natural Request Text + Treasure Chest Sticker */}
               <div className="text-center flex flex-col items-center mb-8 px-2">
-                
                 {/* Whimsical Vintage Treasure Chest Sticker for Gianna's Savings */}
                 <div className="mb-2 w-16 sm:w-20 pointer-events-none select-none drop-shadow-md boil-jiggle">
                   <img
@@ -1025,11 +1085,19 @@ export default function Home() {
                     size={16}
                     color="#F59E0B"
                     className="absolute -top-2 -right-6"
-                    style={{ animationDuration: "3.2s", animationDelay: "-1.8s" }}
+                    style={{
+                      animationDuration: "3.2s",
+                      animationDelay: "-1.8s",
+                    }}
                   />
                 </div>
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs sm:max-w-sm leading-relaxed font-normal">
-                  Your love and prayers are all that we request, but if you wish to give, a monetary gift for <span className="font-semibold text-[#183B49]">Gianna’s savings</span> or any of the gift ideas below would be really appreciated.
+                  Your love and prayers are all that we request, but if you wish
+                  to give, a monetary gift for{" "}
+                  <span className="font-semibold text-[#183B49]">
+                    Gianna’s savings
+                  </span>{" "}
+                  or any of the gift ideas below would be really appreciated.
                 </p>
               </div>
 
@@ -1054,7 +1122,8 @@ export default function Home() {
                       className={cn(
                         "group relative rounded-2xl border border-stone-200/90 bg-stone-50/80 p-3.5 flex flex-col items-center justify-between text-center transition-all duration-300 hover:scale-[1.02] hover:bg-white hover:border-stone-300 hover:shadow-md",
                         rotClass,
-                        isCentered && "col-span-2 mx-auto justify-self-center w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.4375rem)]"
+                        isCentered &&
+                          "col-span-2 mx-auto justify-self-center w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.4375rem)]",
                       )}
                     >
                       {/* Sticker badge visual with die-cut shadow */}
@@ -1081,7 +1150,6 @@ export default function Home() {
                   );
                 })}
               </div>
-
             </div>
 
             {/* Section: Godparents (5rem / mt-20 spacing) */}
@@ -1104,22 +1172,27 @@ export default function Home() {
                   <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
                     Godparents
                   </h3>
-                  <KislapCluster className="absolute -top-3 -right-8" color="#F59E0B" secondaryColor="#7DD3FC" />
+                  <KislapCluster
+                    className="absolute -top-3 -right-8"
+                    color="#F59E0B"
+                    secondaryColor="#7DD3FC"
+                  />
                   <KislapSparkle
                     size={15}
                     color="#38BDF8"
                     className="absolute -bottom-1 -left-6"
-                    style={{ animationDuration: "2.5s", animationDelay: "-0.8s" }}
+                    style={{
+                      animationDuration: "2.5s",
+                      animationDelay: "-0.8s",
+                    }}
                   />
                 </div>
-
               </div>
 
               {/* Two-Column Card for Ninang & Ninong with Underwater Decorative Frame */}
               <div className="relative w-full">
-                
                 {/* Underwater Decorative Frame sitting OUTSIDE the Card Layout */}
-                <div 
+                <div
                   className="pointer-events-none absolute -inset-3 sm:-inset-4 z-0 select-none overflow-visible"
                   aria-hidden="true"
                 >
@@ -1133,13 +1206,44 @@ export default function Home() {
                 {/* The Card Content */}
                 <div className="relative z-10 w-full rounded-2xl border border-stone-200/90 bg-stone-50 overflow-hidden shadow-xs pt-5 pb-6 px-4 sm:px-6 text-left">
                   {/* Decorative corner sparkles on Godparents Card */}
-                  <KislapSparkle size={18} color="#FBBF24" className="absolute top-2.5 left-2.5 z-20" style={{ animationDuration: "3.2s", animationDelay: "-0.4s" }} />
-                  <KislapSparkle size={16} color="#38BDF8" className="absolute top-2.5 right-2.5 z-20" style={{ animationDuration: "2.8s", animationDelay: "-1.6s" }} />
-                  <KislapSparkle size={14} color="#7DD3FC" className="absolute bottom-2.5 left-2.5 z-20" style={{ animationDuration: "3.5s", animationDelay: "-2.1s" }} />
-                  <KislapSparkle size={15} color="#FDE68A" className="absolute bottom-2.5 right-2.5 z-20" style={{ animationDuration: "2.6s", animationDelay: "-1.1s" }} />
+                  <KislapSparkle
+                    size={18}
+                    color="#FBBF24"
+                    className="absolute top-2.5 left-2.5 z-20"
+                    style={{
+                      animationDuration: "3.2s",
+                      animationDelay: "-0.4s",
+                    }}
+                  />
+                  <KislapSparkle
+                    size={16}
+                    color="#38BDF8"
+                    className="absolute top-2.5 right-2.5 z-20"
+                    style={{
+                      animationDuration: "2.8s",
+                      animationDelay: "-1.6s",
+                    }}
+                  />
+                  <KislapSparkle
+                    size={14}
+                    color="#7DD3FC"
+                    className="absolute bottom-2.5 left-2.5 z-20"
+                    style={{
+                      animationDuration: "3.5s",
+                      animationDelay: "-2.1s",
+                    }}
+                  />
+                  <KislapSparkle
+                    size={15}
+                    color="#FDE68A"
+                    className="absolute bottom-2.5 right-2.5 z-20"
+                    style={{
+                      animationDuration: "2.6s",
+                      animationDelay: "-1.1s",
+                    }}
+                  />
 
                   <div className="grid grid-cols-2 divide-x divide-stone-200/80">
-                    
                     {/* Ninang Column */}
                     <div className="pr-3 sm:pr-4 flex flex-col">
                       <div className="pb-2.5 mb-3.5 border-b border-stone-200/80 text-center">
@@ -1189,7 +1293,6 @@ export default function Home() {
                         ))}
                       </ol>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -1197,34 +1300,45 @@ export default function Home() {
 
             {/* Section: RSVP & See You! (5rem / mt-20 spacing) */}
             <div className="mt-20 flex flex-col items-center text-center pb-10 relative">
-              
               {/* Header with "See you!" */}
               <div className="relative mb-5 flex flex-col items-center w-full">
                 <span className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-[#D97A72] mb-1">
                   We Can't Wait To Celebrate
                 </span>
-                
+
                 <div className="relative inline-block">
                   <h3 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none mb-3">
                     See you!
                   </h3>
-                  <KislapCluster className="absolute -top-3 -right-10" color="#FBBF24" secondaryColor="#38BDF8" />
+                  <KislapCluster
+                    className="absolute -top-3 -right-10"
+                    color="#FBBF24"
+                    secondaryColor="#38BDF8"
+                  />
                   <KislapSparkle
                     size={16}
                     color="#F59E0B"
                     className="absolute -bottom-1 -left-7"
-                    style={{ animationDuration: "2.9s", animationDelay: "-1.4s" }}
+                    style={{
+                      animationDuration: "2.9s",
+                      animationDelay: "-1.4s",
+                    }}
                   />
                 </div>
-                
+
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
-                  Your presence would mean the world to us as we welcome Gianna into the Christian world and celebrate her first year.
+                  Your presence would mean the world to us as we welcome Gianna
+                  into the Christian world and celebrate her first year.
                 </p>
               </div>
 
               {/* RSVP Box Card with corner sparkles */}
               <div className="relative w-full rounded-2xl border border-stone-200 bg-stone-50 overflow-visible p-5 sm:p-6 shadow-xs flex flex-col items-center text-center mt-2">
-                <KislapCluster className="absolute -top-3.5 -right-3 z-20" color="#FBBF24" secondaryColor="#38BDF8" />
+                <KislapCluster
+                  className="absolute -top-3.5 -right-3 z-20"
+                  color="#FBBF24"
+                  secondaryColor="#38BDF8"
+                />
                 <KislapSparkle
                   size={18}
                   color="#38BDF8"
@@ -1243,21 +1357,24 @@ export default function Home() {
                   className="absolute -bottom-2 left-4 z-20"
                   style={{ animationDuration: "3.4s", animationDelay: "-1.2s" }}
                 />
-                
+
                 <div className="w-full flex flex-col items-center">
                   <h4 className="font-cormorant text-xl sm:text-2xl font-bold text-[#183B49] mt-1 mb-1">
-                    RSVP by September 26, 2026
+                    RSVP by September 30, 2026
                   </h4>
 
                   <p className="text-xs text-stone-500 max-w-xs leading-relaxed mb-5">
-                    Please let us know if you can join us so we can reserve your seat and meal with the venue reception.
+                    Please let us know if you can join us so we can reserve your
+                    seat and meal with the venue reception.
                   </p>
 
                   {/* Google Form RSVP Button */}
                   <a
                     href={RSVP_GOOGLE_FORM_URL || "#"}
                     target={RSVP_GOOGLE_FORM_URL ? "_blank" : undefined}
-                    rel={RSVP_GOOGLE_FORM_URL ? "noopener noreferrer" : undefined}
+                    rel={
+                      RSVP_GOOGLE_FORM_URL ? "noopener noreferrer" : undefined
+                    }
                     onClick={(e) => {
                       playPopSound();
                       if (!RSVP_GOOGLE_FORM_URL) {
@@ -1281,7 +1398,11 @@ export default function Home() {
                       strokeWidth="2.5"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </a>
 
@@ -1310,7 +1431,6 @@ export default function Home() {
                     className="w-full h-auto object-contain -scale-x-100 rotate-[-6deg] hover:rotate-[-12deg] transition-transform duration-300 boil-alive"
                   />
                 </div>
-
               </div>
 
               {/* Warm Sign-off */}
@@ -1322,11 +1442,8 @@ export default function Home() {
                   Gianna & Family
                 </span>
               </div>
-
             </div>
-
           </div>
-
         </div>
       </BottomSheet>
 
@@ -1358,8 +1475,18 @@ export default function Home() {
                       className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-white/90 text-stone-700 hover:bg-stone-100 flex items-center justify-center shadow-xs border border-stone-200 transition-transform active:scale-90 cursor-pointer"
                       aria-label="Close photo preview"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
 
@@ -1385,10 +1512,9 @@ export default function Home() {
                 </motion.div>
               )}
             </AnimatePresence>,
-            document.body
+            document.body,
           )
         : null}
-
     </div>
   );
 }
