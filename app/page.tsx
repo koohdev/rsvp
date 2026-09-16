@@ -666,9 +666,9 @@ export default function Home() {
               
               {/* Countdown Header inside Box Card 1 */}
               <div className="w-full p-4 sm:p-5 flex flex-col items-center text-center">
-                <h3 className="font-cormorant text-2xl sm:text-3xl font-bold tracking-wide text-[#183B49] mb-4 text-center leading-snug">
+                <h3 className="text-xl font-bold tracking-wide text-[#183B49] mb-4 text-center leading-snug">
                   <span className="block">Countdown Celebration</span>
-                  <span className="block text-xl sm:text-2xl text-[#183B49]/90 mt-0.5">and Event Location</span>
+                  <span className="block text-xl  text-[#183B49]/90 mt-0.5">and Event Location</span>
                 </h3>
 
                 <div className="grid grid-cols-4 w-full divide-x divide-stone-200/80">
@@ -715,8 +715,8 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="font-cormorant text-2xl sm:text-3xl font-bold text-[#183B49] leading-tight mt-0.5">
-                  Immaculate Conception<br></br>Parish Church
+                <h3 className=" text-lg font-bold text-[#183B49] leading-tight mt-0.5">
+                  Immaculate Conception Parish Church
                 </h3>
 
                 <div className="pt-2">
@@ -766,7 +766,7 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <h3 className="font-cormorant text-2xl sm:text-3xl font-bold text-[#183B49] leading-tight mt-0.5">
+                  <h3 className=" text-lg  font-bold text-[#183B49] leading-tight mt-0.5">
                     Benedictines Resort
                   </h3>
 
