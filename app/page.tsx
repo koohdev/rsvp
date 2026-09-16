@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { BottomSheet } from "@/components/motion/bottom-sheet";
 import { EnvelopeBubbleBurst, AmbientBubbles } from "@/components/bubbles";
 import { BoilingFilter } from "@/components/boiling-filter";
+import { KislapSparkle, KislapCluster, KislapBituinBackground } from "@/components/kislap";
 import { cn } from "@/lib/utils";
 
 const giftItems = [
@@ -564,7 +565,7 @@ export default function Home() {
 
       {/* Ambient floating bubbles across the screen while bottom sheet is open */}
       {sheetOpen && (
-        <AmbientBubbles className="fixed inset-0 pointer-events-none z-40" />
+        <AmbientBubbles className="fixed inset-0 pointer-events-none z-[60]" />
       )}
 
       {/* CUSTOM BOTTOM SHEET */}
@@ -581,10 +582,12 @@ export default function Home() {
         backgroundImage="/compressed/underwater-bg.webp"
         className="border-stone-200 text-stone-900"
       >
-        <div className="flex flex-col max-w-md mx-auto pt-3 pb-2 sm:pt-5">
+        <div className="relative flex flex-col max-w-md mx-auto pt-3 pb-2 sm:pt-5">
+          {/* Ambient Twinkling Stars (Kislap / Bituin) throughout the Bottom Sheet */}
+          <KislapBituinBackground />
           
           {/* Section 1 Header: Arched Invitation Intro & Gianna Preview */}
-          <div className="text-center flex flex-col items-center mb-8">
+          <div className="text-center flex flex-col items-center mb-8 relative z-10">
             
             {/* Header: Join Us For Christening And 1st Birthday */}
             <div className="w-full max-w-[360px] sm:max-w-[400px] mx-auto flex flex-col items-center text-center">
@@ -607,14 +610,30 @@ export default function Home() {
                 OUR DAUGHTER
               </p>
 
-              {/* Gianna Isabelle in dress code cursive script font */}
-              <h2 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none mt-1">
-                Gianna Isabelle
-              </h2>
+              {/* Gianna Isabelle with Kislap / Bituin sparkles */}
+              <div className="relative inline-block mt-1">
+                <h2 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none">
+                  Gianna Isabelle
+                </h2>
+                <KislapCluster className="absolute -top-3 -right-6" color="#F59E0B" />
+                <KislapSparkle
+                  size={14}
+                  color="#38BDF8"
+                  className="absolute -bottom-1 -left-5"
+                  style={{ animationDuration: "2.4s", animationDelay: "-1.2s" }}
+                />
+              </div>
             </div>
 
-            {/* Gianna's First Preview Card */}
+            {/* Gianna's First Preview Card with corner fairy sparkles */}
             <div className="relative w-[345px] min-[375px]:w-[365px] sm:w-[405px] mx-auto mt-6">
+              <KislapCluster className="absolute -top-3 -right-2 z-20" color="#FBBF24" />
+              <KislapSparkle
+                size={16}
+                color="#7DD3FC"
+                className="absolute -bottom-2 -left-3 z-20"
+                style={{ animationDuration: "3s", animationDelay: "-1.5s" }}
+              />
               <img
                 src="first-preview-card.png"
                 alt="Gianna Isabelle Photo Cards with Ariel"
@@ -634,10 +653,16 @@ export default function Home() {
           </div>
 
           {/* Section 1: Countdown & Event Locations (7rem space below Date) */}
-          <div className="pt-[0rem] flex flex-col">
+          <div className="pt-[0rem] flex flex-col relative z-10">
             
             {/* Box Card 1: Church Ceremony with Countdown Header */}
-            <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
+            <div className="relative rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
+              <KislapSparkle
+                size={16}
+                color="#FBBF24"
+                className="absolute top-3.5 right-3.5 z-10"
+                style={{ animationDuration: "2.8s", animationDelay: "-0.6s" }}
+              />
               
               {/* Countdown Header inside Box Card 1 */}
               <div className="w-full p-4 sm:p-5 flex flex-col items-center text-center">
@@ -714,7 +739,13 @@ export default function Home() {
 
             {/* Box Card 2: Venue / Reception */}
             <div className="relative mt-4">
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
+              <div className="relative rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
+                <KislapSparkle
+                  size={15}
+                  color="#38BDF8"
+                  className="absolute top-3.5 right-3.5 z-10"
+                  style={{ animationDuration: "3.1s", animationDelay: "-1.4s" }}
+                />
                 {/* Resort Image */}
                 <div className="w-full h-48 sm:h-56 relative bg-stone-100">
                   <img
@@ -781,9 +812,17 @@ export default function Home() {
             {/* Section: Dress Code (5rem / mt-20 space) */}
             <div className="mt-20 flex flex-col items-center text-center">
               <div className="relative mb-4">
-                <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-2">
-                  Dress Code
-                </h3>
+                <div className="relative inline-block">
+                  <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-2">
+                    Dress Code
+                  </h3>
+                  <KislapSparkle
+                    size={16}
+                    color="#FBBF24"
+                    className="absolute -top-2 -right-5"
+                    style={{ animationDuration: "2.9s", animationDelay: "-1.0s" }}
+                  />
+                </div>
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
                   Semi-formal attire. Pastel colors are warmly appreciated.
                 </p>
@@ -810,9 +849,12 @@ export default function Home() {
             {/* Section: Gianna's Underwater Adventure (5rem / mt-20 space - Replaces Safety Guidelines) */}
             <div className="mt-20 flex flex-col items-center text-center">
               <div className="relative mb-3 flex items-center justify-center">
-                <h3 className="relative z-10 font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
-                  Gianna's Underwater Adventure
-                </h3>
+                <div className="relative inline-block">
+                  <h3 className="relative z-10 font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none">
+                    Gianna's Underwater Adventure
+                  </h3>
+                  <KislapCluster className="absolute -top-3 -right-7 z-20" color="#38BDF8" />
+                </div>
 
                 {/* Gentle Baby Sea Turtle Sticker placed with -z-1 below the text */}
                 <div 
@@ -972,9 +1014,17 @@ export default function Home() {
                   />
                 </div>
 
-                <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
-                  Gift Ideas
-                </h3>
+                <div className="relative inline-block">
+                  <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
+                    Gift Ideas
+                  </h3>
+                  <KislapSparkle
+                    size={16}
+                    color="#F59E0B"
+                    className="absolute -top-2 -right-6"
+                    style={{ animationDuration: "3.2s", animationDelay: "-1.8s" }}
+                  />
+                </div>
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs sm:max-w-sm leading-relaxed font-normal">
                   Your love and prayers are all that we request, but if you wish to give, a monetary gift for <span className="font-semibold text-[#183B49]">Gianna’s savings</span> or any of the gift ideas below would be really appreciated.
                 </p>
@@ -1047,9 +1097,18 @@ export default function Home() {
                   Faith, Love & Guidance
                 </span>
 
-                <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
-                  Godparents
-                </h3>
+                <div className="relative inline-block">
+                  <h3 className="font-cursive text-5xl sm:text-6xl text-[#183B49] leading-none mb-3">
+                    Godparents
+                  </h3>
+                  <KislapCluster className="absolute -top-3 -right-8" color="#F59E0B" secondaryColor="#7DD3FC" />
+                  <KislapSparkle
+                    size={15}
+                    color="#38BDF8"
+                    className="absolute -bottom-1 -left-6"
+                    style={{ animationDuration: "2.5s", animationDelay: "-0.8s" }}
+                  />
+                </div>
 
               </div>
 
@@ -1070,6 +1129,12 @@ export default function Home() {
 
                 {/* The Card Content */}
                 <div className="relative z-10 w-full rounded-2xl border border-stone-200/90 bg-stone-50 overflow-hidden shadow-xs pt-5 pb-6 px-4 sm:px-6 text-left">
+                  {/* Decorative corner sparkles on Godparents Card */}
+                  <KislapSparkle size={18} color="#FBBF24" className="absolute top-2.5 left-2.5 z-20" style={{ animationDuration: "3.2s", animationDelay: "-0.4s" }} />
+                  <KislapSparkle size={16} color="#38BDF8" className="absolute top-2.5 right-2.5 z-20" style={{ animationDuration: "2.8s", animationDelay: "-1.6s" }} />
+                  <KislapSparkle size={14} color="#7DD3FC" className="absolute bottom-2.5 left-2.5 z-20" style={{ animationDuration: "3.5s", animationDelay: "-2.1s" }} />
+                  <KislapSparkle size={15} color="#FDE68A" className="absolute bottom-2.5 right-2.5 z-20" style={{ animationDuration: "2.6s", animationDelay: "-1.1s" }} />
+
                   <div className="grid grid-cols-2 divide-x divide-stone-200/80">
                     
                     {/* Ninang Column */}
@@ -1136,17 +1201,45 @@ export default function Home() {
                   We Can't Wait To Celebrate
                 </span>
                 
-                <h3 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none mb-3">
-                  See you!
-                </h3>
+                <div className="relative inline-block">
+                  <h3 className="font-cursive text-6xl sm:text-7xl text-[#183B49] leading-none mb-3">
+                    See you!
+                  </h3>
+                  <KislapCluster className="absolute -top-3 -right-10" color="#FBBF24" secondaryColor="#38BDF8" />
+                  <KislapSparkle
+                    size={16}
+                    color="#F59E0B"
+                    className="absolute -bottom-1 -left-7"
+                    style={{ animationDuration: "2.9s", animationDelay: "-1.4s" }}
+                  />
+                </div>
                 
                 <p className="text-xs sm:text-sm text-stone-600 max-w-xs leading-relaxed font-normal">
                   Your presence would mean the world to us as we welcome Gianna into the Christian world and celebrate her first year.
                 </p>
               </div>
 
-              {/* RSVP Box Card */}
+              {/* RSVP Box Card with corner sparkles */}
               <div className="relative w-full rounded-2xl border border-stone-200 bg-stone-50 overflow-visible p-5 sm:p-6 shadow-xs flex flex-col items-center text-center mt-2">
+                <KislapCluster className="absolute -top-3.5 -right-3 z-20" color="#FBBF24" secondaryColor="#38BDF8" />
+                <KislapSparkle
+                  size={18}
+                  color="#38BDF8"
+                  className="absolute -top-2.5 -left-2.5 z-20"
+                  style={{ animationDuration: "3.1s", animationDelay: "-0.7s" }}
+                />
+                <KislapSparkle
+                  size={15}
+                  color="#FBBF24"
+                  className="absolute -bottom-2 right-4 z-20"
+                  style={{ animationDuration: "2.7s", animationDelay: "-1.8s" }}
+                />
+                <KislapSparkle
+                  size={14}
+                  color="#7DD3FC"
+                  className="absolute -bottom-2 left-4 z-20"
+                  style={{ animationDuration: "3.4s", animationDelay: "-1.2s" }}
+                />
                 
                 <div className="w-full flex flex-col items-center">
                   <h4 className="font-cormorant text-xl sm:text-2xl font-bold text-[#183B49] mt-1 mb-1">

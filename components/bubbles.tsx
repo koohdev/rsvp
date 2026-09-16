@@ -2,23 +2,15 @@
 
 import React, { useId } from "react";
 
-// Deterministic ambient bubbles configuration
+// Deterministic ambient bubbles configuration - toned down, subtle, and gentle
 const AMBIENT_BUBBLES = [
-  { id: 1, left: "6%", size: 14, duration: 8.5, delay: -1.2 },
-  { id: 2, left: "14%", size: 22, duration: 11.2, delay: -5.4 },
-  { id: 3, left: "24%", size: 10, duration: 7.8, delay: -3.1 },
-  { id: 4, left: "32%", size: 28, duration: 13.5, delay: -8.0 },
-  { id: 5, left: "42%", size: 16, duration: 9.6, delay: -2.7 },
-  { id: 6, left: "53%", size: 20, duration: 10.4, delay: -6.5 },
-  { id: 7, left: "64%", size: 12, duration: 8.1, delay: -4.3 },
-  { id: 8, left: "75%", size: 30, duration: 14.2, delay: -9.8 },
-  { id: 9, left: "84%", size: 18, duration: 9.9, delay: -1.8 },
-  { id: 10, left: "92%", size: 15, duration: 8.9, delay: -5.0 },
-  { id: 11, left: "10%", size: 24, duration: 12.0, delay: -7.2 },
-  { id: 12, left: "28%", size: 13, duration: 8.4, delay: -4.0 },
-  { id: 13, left: "48%", size: 26, duration: 12.8, delay: -10.5 },
-  { id: 14, left: "68%", size: 11, duration: 7.5, delay: -2.2 },
-  { id: 15, left: "88%", size: 22, duration: 11.0, delay: -6.8 },
+  { id: 1, left: "8%", size: 14, duration: 12.0, delay: -2.0, drift1: "10px", drift2: "-8px", drift3: "6px" },
+  { id: 2, left: "24%", size: 18, duration: 15.0, delay: -8.5, drift1: "-10px", drift2: "8px", drift3: "-6px" },
+  { id: 3, left: "42%", size: 11, duration: 11.0, delay: -4.5, drift1: "8px", drift2: "-6px", drift3: "8px" },
+  { id: 4, left: "58%", size: 20, duration: 16.0, delay: -12.0, drift1: "-12px", drift2: "10px", drift3: "-8px" },
+  { id: 5, left: "72%", size: 13, duration: 13.0, delay: -3.5, drift1: "8px", drift2: "-10px", drift3: "6px" },
+  { id: 6, left: "86%", size: 16, duration: 14.5, delay: -9.0, drift1: "-8px", drift2: "10px", drift3: "-8px" },
+  { id: 7, left: "94%", size: 10, duration: 11.5, delay: -6.0, drift1: "6px", drift2: "-8px", drift3: "6px" },
 ];
 
 // Burst bubbles for when the envelope is opened
@@ -41,25 +33,32 @@ const BURST_BUBBLES = [
 
 /**
  * Continuous floating bubbles inside underwater environments (Bottom sheet or screen)
+ * Fully non-blocking (pointer-events-none) so users can tap and interact with any element underneath.
  */
 export function AmbientBubbles({ className = "" }: { className?: string }) {
+  const isFixed = className.includes("fixed");
   return (
     <div
-      className={`absolute inset-0 pointer-events-none overflow-hidden select-none ${className}`}
+      className={`${isFixed ? "fixed" : "absolute"} inset-0 pointer-events-none overflow-hidden select-none ${className}`}
       aria-hidden="true"
     >
       {AMBIENT_BUBBLES.map((b) => (
         <div
           key={b.id}
-          className="underwater-bubble"
-          style={{
-            left: b.left,
-            bottom: "-40px",
-            width: `${b.size}px`,
-            height: `${b.size}px`,
-            animationDuration: `${b.duration}s`,
-            animationDelay: `${b.delay}s`,
-          }}
+          className="underwater-bubble pointer-events-none select-none"
+          style={
+            {
+              left: b.left,
+              bottom: "-50px",
+              width: `${b.size}px`,
+              height: `${b.size}px`,
+              animationDuration: `${b.duration}s`,
+              animationDelay: `${b.delay}s`,
+              "--drift-1": b.drift1,
+              "--drift-2": b.drift2,
+              "--drift-3": b.drift3,
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>
