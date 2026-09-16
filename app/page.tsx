@@ -22,11 +22,6 @@ const giftItems = [
     title: "Sleepy Time Cleansing Splash",
   },
   {
-    id: 3,
-    image: "/compressed/gift-ideas/oral-cleaner.webp",
-    title: "Baby Oral Cleaner",
-  },
-  {
     id: 4,
     image: "/compressed/gift-ideas/4.webp",
     title: "Cycles & Cradle",
@@ -34,7 +29,7 @@ const giftItems = [
   {
     id: 5,
     image: "/compressed/gift-ideas/5.webp",
-    title: "EQ Water Wipes",
+    title: "EQ Water Wipes / Moose Gear Dry Wipes",
   },
   {
     id: 8,
@@ -120,6 +115,18 @@ const adventurePhotos = [
     tag: "9th Month",
     title: "Pocahontas",
     image: "/compressed/milestones/9th_months_as_pocahontas.webp",
+  },
+  {
+    id: 11,
+    tag: "10th Month",
+    title: "Moana",
+    image: "/compressed/milestones/10th_month_as_moana.webp",
+  },
+  {
+    id: 12,
+    tag: "11th Month",
+    title: "Beauty and the Beast",
+    image: "/compressed/milestones/11th_month_as_belle.webp",
   },
 ];
 
@@ -392,23 +399,6 @@ export default function Home() {
       {/* Main Container - No centered flex */}
       <main className="relative z-10 w-full max-w-md mx-auto h-[100dvh] min-h-[100dvh] overflow-hidden">
         
-        {/* Closed Card Page Header: "You Are Invited" & "Gianna's Baptism & First Birthday" */}
-        {!isOpened && (
-          <div
-            className={cn(
-              "absolute left-0 right-0 z-20 text-center px-4 pointer-events-none select-none transition-all duration-300",
-              "top-[calc(52vh-226px)] sm:top-[calc(52vh-250px)] -translate-y-full pb-2 sm:pb-3",
-              !hasLanded && "stop-motion-button"
-            )}
-          >
-            <p className="font-cursive text-4xl sm:text-5xl text-[#183B49] leading-none drop-shadow-2xs">
-              You Are Invited
-            </p>
-            <p className="font-cormorant text-xs sm:text-sm italic tracking-[0.1em] text-[#183B49]/75 mt-1">
-              Gianna&apos;s Christening & First Birthday
-            </p>
-          </div>
-        )}
 
 
         {/* Envelope Interactive Stage - Anchored with bottom edge at fixed 52vh baseline */}
@@ -436,18 +426,35 @@ export default function Home() {
             {/* Bubble burst when envelope opens */}
             <EnvelopeBubbleBurst active={isOpened} />
 
-            <Image
-              src={
-                isOpened
-                  ? "/compressed/invitation-card-underwater-opened.webp"
-                  : "/compressed/invitation-card-underwater-closed.webp"
-              }
-              alt={isOpened ? "Opened Underwater Invitation Envelope" : "Closed Underwater Invitation Envelope"}
-              width={714}
-              height={805}
-              priority
-              className="w-full h-auto object-contain pointer-events-none select-none block"
-            />
+            <div className="relative w-full">
+              <Image
+                src={
+                  isOpened
+                    ? "/compressed/invitation-card-underwater-opened.webp"
+                    : "/compressed/invitation-card-underwater-closed.webp"
+                }
+                alt={isOpened ? "Opened Underwater Invitation Envelope" : "Closed Underwater Invitation Envelope"}
+                width={714}
+                height={805}
+                priority
+                className="w-full h-auto object-contain pointer-events-none select-none block"
+              />
+
+              {/* Slanted cursive 'You're Invited' on closed envelope flap */}
+              {!isOpened && (
+                <div
+                  className="absolute top-[48%] left-[49.5%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none select-none z-10 -rotate-6"
+                  aria-hidden="true"
+                >
+                  <span className="block font-cursive text-3xl min-[375px]:text-4xl sm:text-[42px] text-[#183B49] leading-[0.88] drop-shadow-2xs">
+                    You&apos;re
+                  </span>
+                  <span className="block font-cursive text-3xl min-[375px]:text-4xl sm:text-[42px] text-[#183B49] leading-[0.88] drop-shadow-2xs">
+                    Invited
+                  </span>
+                </div>
+              )}
+            </div>
 
             {/* Ariel staying in water swim - positioned on lower left exactly matching preview */}
             <div
@@ -511,7 +518,7 @@ export default function Home() {
               onClick={handleCardClick}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>Click the Envelope to Open</span>
+              <span className="tracking-wider uppercase font-semibold text-[11px] sm:text-xs">CLICK THE ENVELOPE</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -534,7 +541,7 @@ export default function Home() {
               }}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 active:scale-95 text-xs text-stone-600 hover:text-stone-900 font-medium transition-all cursor-pointer select-none"
             >
-              <span>Tap the Envelope to View Details</span>
+              <span className="uppercase">Tap the Envelope to View Details</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-stone-400"
@@ -579,30 +586,24 @@ export default function Home() {
           {/* Section 1 Header: Arched Invitation Intro & Gianna Preview */}
           <div className="text-center flex flex-col items-center mb-8">
             
-            {/* Arched Text (Not italic, curved in a circle/arch like annotated mockup) */}
-            <div className="w-full max-w-[360px] sm:max-w-[400px] mx-auto flex flex-col items-center">
-              <svg
-                viewBox="0 0 440 120"
-                className="w-full h-auto overflow-visible select-none"
-                aria-label="Join us for Christening and 1st birthday of"
-              >
-                <path
-                  id="header-arc"
-                  d="M 10,110 A 280,280 0 0,1 430,110"
-                  fill="none"
-                />
-                <text
-                  className="fill-[#183B49] text-[16px] sm:text-[17px] font-cormorant font-bold tracking-[0.14em]"
-                  textAnchor="middle"
-                >
-                  <textPath href="#header-arc" startOffset="50%">
-                    JOIN US FOR CHRISTENING AND 1ST BIRTHDAY OF
-                  </textPath>
-                </text>
-              </svg>
+            {/* Header: Join Us For Christening And 1st Birthday */}
+            <div className="w-full max-w-[360px] sm:max-w-[400px] mx-auto flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center">
+                <p className="font-cormorant text-base sm:text-lg font-bold tracking-[0.16em] sm:tracking-[0.18em] text-[#183B49] uppercase leading-snug">
+                  JOIN US FOR CHRISTENING
+                </p>
+                <p className="font-cormorant text-base sm:text-lg font-bold tracking-[0.16em] sm:tracking-[0.18em] text-[#183B49] uppercase leading-snug">
+                  AND{" "}
+                  <span className="tracking-normal inline-flex items-baseline gap-0.5">
+                    <span className="font-sans font-bold text-[15px] sm:text-[20px]">1</span>
+                    <span className="uppercase text-base sm:text-lg font-bold font-cormorant">ST</span>
+                  </span>{" "}
+                  BIRTHDAY OF
+                </p>
+              </div>
 
               {/* OUR DAUGHTER */}
-              <p className="font-cormorant text-sm sm:text-base font-bold uppercase tracking-[0.3em] text-[#183B49] -mt-1">
+              <p className="font-cormorant text-xs sm:text-sm font-bold uppercase tracking-[0.28em] text-[#183B49] mt-3">
                 OUR DAUGHTER
               </p>
 
@@ -615,7 +616,7 @@ export default function Home() {
             {/* Gianna's First Preview Card */}
             <div className="relative w-[345px] min-[375px]:w-[365px] sm:w-[405px] mx-auto mt-6">
               <img
-                src="/compressed/first-preview-card.webp"
+                src="first-preview-card.png"
                 alt="Gianna Isabelle Photo Cards with Ariel"
                 className="w-full h-auto block drop-shadow-md select-none pointer-events-none"
               />
@@ -689,8 +690,8 @@ export default function Home() {
                   </span>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-bold text-[#183B49] leading-snug">
-                  Immaculate Conception Parish Church
+                <h3 className="font-cursive text-3xl sm:text-4xl text-[#183B49] leading-tight mt-0.5">
+                  Immaculate Conception<br></br>Parish Church
                 </h3>
 
                 <div className="pt-2">
@@ -711,40 +712,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Transition Route: Church Ceremony -> Venue Reception */}
-            <div className="flex flex-col items-center justify-center my-3.5 select-none" aria-hidden="true">
-              <svg
-                width="24"
-                height="54"
-                viewBox="0 0 24 54"
-                fill="none"
-                className="text-[#183B49] drop-shadow-xs"
-              >
-                {/* Bold dashed route line */}
-                <line
-                  x1="12"
-                  y1="2"
-                  x2="12"
-                  y2="40"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeDasharray="6 4.5"
-                  strokeLinecap="round"
-                />
-                {/* Bold direction arrow chevron */}
-                <path
-                  d="M6 37L12 47L18 37"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-
             {/* Box Card 2: Venue / Reception */}
-            <div className="relative">
+            <div className="relative mt-4">
               <div className="rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden shadow-xs">
                 {/* Resort Image */}
                 <div className="w-full h-48 sm:h-56 relative bg-stone-100">
@@ -763,7 +732,7 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-[#183B49] leading-snug">
+                  <h3 className="font-cursive text-3xl sm:text-4xl text-[#183B49] leading-tight mt-0.5">
                     Benedictines Resort
                   </h3>
 
@@ -1024,8 +993,7 @@ export default function Home() {
                   ];
                   const rotClass = rotations[idx % rotations.length];
                   const isCentered =
-                    item.title === "Montessori Wooden Toys" ||
-                    (idx === giftItems.length - 1 && giftItems.length % 2 === 1);
+                    idx === giftItems.length - 1 && giftItems.length % 2 === 1;
 
                   return (
                     <div
