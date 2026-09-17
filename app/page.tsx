@@ -763,12 +763,12 @@ export default function Home() {
                 </div>
 
                 <h3 className="font-cormorant text-2xl sm:text-3xl font-bold text-[#183B49] leading-tight mt-0.5">
-                  Immaculate Conception<br></br>Parish Church
+                  Santo de la Inmaculate Concepcion
                 </h3>
 
                 <div className="pt-2">
                   <a
-                    href="https://maps.app.goo.gl/NpEfPgrtJjy48qQQ7"
+                    href="https://maps.app.goo.gl/GJQa9QqPTJF1a9yg8"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full  flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-300 bg-white hover:bg-stone-100 text-stone-800 text-xs sm:text-sm font-medium transition-colors"
